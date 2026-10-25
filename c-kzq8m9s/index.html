@@ -511,7 +511,7 @@ function renderReview() {
       <p class="step-lead">אפשר לעבור על התשובות ולערוך כל שלב. כשהכול נראה טוב — לוחצים "שליחה".</p>
       ${FORM.steps.map((s, i) => `<h3><span>${esc(s.title)}</span><button type="button" data-edit="${i}">לערוך</button></h3><dl>` +
         s.questions.filter(visible).map(q => (q.type === 'matrix' ? `<dt style="color:var(--gold);font-weight:600">${q.label}</dt>` : '') + fieldsOf(q).map(f => { const d = display(f); return `<dt>${f.outLabel}</dt><dd class="${d ? '' : 'empty'}">${d ? esc(d) : 'לא נענה'}</dd>`; }).join('')).join('') + '</dl>').join('')}
-      <div class="send-err" id="sendErr">השליחה לא הצליחה. התשובות שמורות — נסו שוב בעוד רגע, או <a href="#" id="dlLink">הורידו את התשובות כקובץ</a> ושלחו אותו למאיר בוואטסאפ.</div>
+      <div class="send-err" id="sendErr">השליחה לא הצליחה. התשובות שמורות — נסו שוב בעוד רגע, או <a href="#" id="dlLink">הורידו את התשובות כקובץ</a> ושלחו אותו למאיר <a href="https://wa.me/972546500795?text=%D7%94%D7%99%D7%99%20%D7%9E%D7%90%D7%99%D7%A8%2C%20%D7%94%D7%A9%D7%90%D7%9C%D7%95%D7%9F%20%D7%9C%D7%90%20%D7%A0%D7%A9%D7%9C%D7%97%20%D7%9E%D7%94%D7%90%D7%AA%D7%A8%20%E2%80%94%20%D7%9E%D7%A6%D7%A8%D7%A3%20%D7%90%D7%AA%20%D7%94%D7%A7%D7%95%D7%91%D7%A5" target="_blank" rel="noopener">בוואטסאפ</a>.<small id="sendErrDetail" style="display:block;margin-top:8px;font-size:12px;color:#8a6b62;direction:ltr;text-align:right"></small></div>
     </section>`;
   nav.hidden = false;
   $('#nextBtn').innerHTML = 'שליחה' + SEND_IC;
@@ -560,22 +560,32 @@ function download() {
 }
 async function submit() {
   const btn = $('#nextBtn'); btn.disabled = true; btn.textContent = 'שולח…';
-  const fd = new FormData();
-  fd.append('access_key', WEB3FORMS_KEY);
-  fd.append('subject', 'שאלון CRM — FORUM BUSINESS CLUB');
-  fd.append('from_name', 'FORUM BUSINESS CLUB');
-  fd.append('botcheck', '');
-  fd.append('Full_Answers', plainText());
-  allFields().filter(fieldVisible).forEach(f => fd.append(f.id, display(f) || '—'));
-  let ok = false;
-  try {
-    const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd });
-    const j = await r.json().catch(() => ({}));
-    ok = r.ok && j.success !== false;
-  } catch (e) {}
+  const subject = 'שאלון CRM — FORUM BUSINESS CLUB';
+  const plain = plainText();
+  const post = async fd => {
+    const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 20000);
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd, signal: ctl.signal });
+      const txt = await res.text(); let json = {}; try { json = JSON.parse(txt); } catch (e) {}
+      if (!res.ok || !(json.success === true || json.success === 'true')) throw new Error((json.message || txt || ('HTTP ' + res.status)).toString().slice(0, 160));
+    } finally { clearTimeout(t); }
+  };
+  const base = () => { const fd = new FormData(); fd.append('access_key', WEB3FORMS_KEY); fd.append('subject', subject); fd.append('from_name', 'AI Lab Pro — שאלון CRM'); return fd; };
+  const attempts = [
+    // 1. one field per answer (same shape as the intake forms that deliver)
+    () => { const fd = base(); allFields().filter(fieldVisible).forEach(f => fd.append(f.id, `${f.outLabel} ← ${display(f) || '—'}`)); fd.append('Source', 'private-intake/c-kzq8m9s'); return post(fd); },
+    // 2. everything in a single message field
+    () => { const fd = base(); fd.append('name', 'FORUM BUSINESS CLUB'); fd.append('message', plain); fd.append('Source', 'private-intake/c-kzq8m9s (compact)'); return post(fd); }
+  ];
+  const errors = [];
+  for (const run of attempts) {
+    try { await run(); btn.disabled = false; go(N() + 1); return; }
+    catch (e) { errors.push(e && e.message ? e.message : String(e)); await new Promise(r => setTimeout(r, 1200)); }
+  }
   btn.disabled = false;
-  if (ok) go(N() + 1);
-  else { $('#sendErr').classList.add('on'); btn.innerHTML = 'לנסות שוב' + SEND_IC; $('#sendErr').scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+  $('#sendErrDetail').textContent = errors.map((e, i) => `${i + 1}: ${e}`).join(' · ');
+  $('#sendErr').classList.add('on'); btn.innerHTML = 'לנסות שוב' + SEND_IC;
+  $('#sendErr').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 /* ---------- nav ---------- */
