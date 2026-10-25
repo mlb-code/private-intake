@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>שאלון אפיון — מערכת CRM ל-FORUM BUSINESS CLUB</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230d0c0b'/%3E%3Cg transform='translate(7.6 9.2) scale(.8)'%3E%3Cpath d='M18 92V20c0-6 4-10 10-10h60v14H34v20h40v14H34v34z' fill='%23c9a46a'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500&family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f1e9;--card:#fff;--line:#e6dccb;--ink:#1f1a14;--muted:#6b6256;
+  --gold:#a07a45;--gold-2:#c9a46a;--gold-soft:#f3ead9;--ok:#2f7d4f;--ok-soft:#e6f3ea;--err:#b4432f;--err-soft:#fbebe7;
+  --gold-grad:linear-gradient(135deg,#e8cf9f 0%,#c9a46a 45%,#a07a45 100%);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font-family:Heebo,system-ui,sans-serif;font-size:17px;line-height:1.65;overflow-x:clip;min-height:100vh}
+button,input,textarea{font:inherit;color:inherit}
+.wrap{width:min(760px,100% - 32px);margin-inline:auto}
+
+.top{background:#0d0c0b;color:#efe7da;position:sticky;top:0;z-index:20}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:58px}
+.brand{display:flex;align-items:center;gap:10px;direction:ltr;flex:none}
+.brand svg{width:26px;height:26px}
+.brand b{font-family:Cinzel,serif;font-weight:500;letter-spacing:.12em;font-size:14.5px;background:var(--gold-grad);-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap}
+.top small{font-size:13px;color:#cfc4b2;text-align:left;line-height:1.35}
+.progress{height:4px;background:#2a2520}
+.progress i{display:block;height:100%;width:0;background:var(--gold-grad);transition:width .4s}
+
+main{padding:26px 0 130px}
+.screen{animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;margin-top:16px}
+h1{font-size:clamp(24px,4.4vw,32px);line-height:1.3;font-weight:700}
+.sub{color:var(--gold);font-weight:600;margin-top:6px;font-size:15.5px}
+.intro p{margin-top:12px}
+.intro p:first-child{margin-top:0}
+.intro ul,.intro ol{margin:8px 22px 0 0;display:grid;gap:5px}
+.intro b{font-weight:700}
+.resume{margin-top:16px;background:var(--ok-soft);border:1px solid #b9dcc6;border-radius:12px;padding:12px 16px}
+.row-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+
+.step-meta{font-size:14px;color:var(--gold);font-weight:600}
+.step-title{font-size:24px;font-weight:700;margin-top:2px;line-height:1.3}
+.step-lead{color:#4a4238;margin-top:6px}
+
+.q{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;margin-top:14px}
+.q.hidden{display:none}
+.q.err{border-color:var(--err);background:var(--err-soft)}
+.q-label{font-weight:600;font-size:17.5px;line-height:1.45}
+.q-label .opt{font-weight:400;font-size:13.5px;color:var(--muted);margin-right:6px}
+.q-label .req{color:var(--err);margin-right:4px}
+.q-help{font-size:14.5px;color:var(--muted);margin-top:3px}
+.q-err{display:none;font-size:14px;color:var(--err);margin-top:10px;font-weight:500}
+.q.err .q-err{display:block}
+.sub-q{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line)}
+.sub-q:first-of-type{border-top:0;padding-top:0}
+.sub-label{font-weight:500;font-size:16px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{position:relative;display:block}
+.chip input{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.chip span{display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:9px 15px;border:1.5px solid var(--line);border-radius:12px;background:#fcfaf6;cursor:pointer;transition:border-color .15s,background .15s;font-size:16px;line-height:1.35}
+.chip span::before{content:"";flex:none;width:17px;height:17px;border:1.5px solid #c9bda9;border-radius:50%;background:#fff}
+.chip.multi span::before{border-radius:5px}
+.chip input:checked+span{border-color:var(--gold);background:var(--gold-soft);font-weight:500}
+.chip input:checked+span::before{border-color:var(--gold);background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center/11px no-repeat}
+.chip input:focus-visible+span{outline:3px solid rgba(160,122,69,.35);outline-offset:2px}
+.chips.col{flex-direction:column}
+.chips.col .chip span{width:100%}
+
+.mrow{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:10px;background:#fefdfb}
+.mrow-label{font-weight:500;font-size:15.5px;line-height:1.45}
+.mrow .chips{margin-top:8px;gap:6px}
+.mrow .chip span{min-height:40px;padding:7px 12px;font-size:15px}
+
+.field{margin-top:10px}
+.field input,.field textarea,.other-in{width:100%;border:1.5px solid var(--line);border-radius:12px;background:#fcfaf6;padding:11px 14px;font-size:16.5px;outline:none;transition:border-color .2s,background .2s}
+.field textarea{min-height:110px;resize:vertical}
+.field input:focus,.field textarea:focus,.other-in:focus{border-color:var(--gold);background:#fff}
+.field input[type=tel],.field input[type=email]{direction:ltr;text-align:right}
+.field-label{font-size:15px;font-weight:500;color:#3b342b;margin-top:12px;display:block}
+.other-in{margin-top:8px;display:none}
+.other-in.on{display:block}
+
+.nudge{display:none;margin-top:14px;background:var(--gold-soft);border:1px solid #e2cfa9;border-radius:12px;padding:12px 16px}
+.nudge.on{display:block}
+.nudge p{font-weight:500}
+.nudge .row-btns{margin-top:10px}
+
+.nav{position:fixed;inset:auto 0 0 0;z-index:15;background:rgba(246,241,233,.95);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--line)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:72px;padding-block:10px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 24px;border-radius:12px;border:0;cursor:pointer;font-weight:600;font-size:16.5px;text-decoration:none}
+.btn.primary{background:var(--gold-grad);color:#1d160d;box-shadow:0 10px 24px -14px rgba(160,122,69,.9)}
+.btn.ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
+.btn.small{min-height:40px;padding:8px 16px;font-size:15px}
+.btn[disabled]{opacity:.6;cursor:default}
+.btn svg{width:18px;height:18px}
+.saved{font-size:13.5px;color:var(--muted);text-align:center}
+
+.review h3{font-size:18px;font-weight:700;margin:24px 0 6px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.review h3 button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:4px 12px;color:var(--gold);font-weight:600;cursor:pointer;font-size:14.5px}
+.review dl{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px 16px}
+.review dt{font-size:14.5px;color:var(--muted);margin-top:10px;line-height:1.45}
+.review dd{font-weight:500;margin-bottom:10px;white-space:pre-wrap;overflow-wrap:anywhere}
+.review dd.empty{color:#aaa094;font-weight:400}
+.send-err{display:none;margin-top:16px;background:var(--err-soft);border:1px solid #e9bfb5;border-radius:12px;padding:14px 16px}
+.send-err.on{display:block}
+.send-err a{color:var(--err);font-weight:600}
+.done-ic{width:72px;height:72px;border-radius:50%;background:var(--gold-grad);display:grid;place-items:center;margin:0 auto 14px}
+.done-ic svg{width:34px;height:34px}
+.fine{font-size:14px;color:var(--muted);margin-top:18px}
+
+@media (max-width:600px){
+  body{font-size:16.5px}
+  .card{padding:18px}
+  .q{padding:16px 14px}
+  .top small{font-size:12px;max-width:52%}
+  .nav .btn{padding:12px 18px}
+  .saved{display:none}
+  .step-title{font-size:22px}
+}
+@media (max-width:420px){.brand b{display:none}.top small{max-width:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <svg viewBox="0 0 100 100" aria-hidden="true"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f3dcae"/><stop offset=".45" stop-color="#c9a46a"/><stop offset=".75" stop-color="#9b7743"/><stop offset="1" stop-color="#e5c891"/></linearGradient></defs><path d="M18 92V20c0-6 4-10 10-10h60v14H34v20h40v14H34v34z" fill="url(#g)"/><path d="M40 92V56h28v-4H40v-6h0V30h48v-4H36v66z" fill="none" stroke="url(#g)" stroke-width="2.4"/></svg>
+      <b>FORUM BUSINESS CLUB</b>
+    </div>
+    <small id="topLabel">שאלון אפיון · מערכת CRM</small>
+  </div>
+  <div class="progress"><i id="bar"></i></div>
+</header>
+
+<main class="wrap" id="app"></main>
+
+<nav class="nav" id="nav" hidden>
+  <div class="wrap">
+    <button class="btn ghost" id="backBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>חזרה</button>
+    <span class="saved" id="savedMsg"></span>
+    <button class="btn primary" id="nextBtn" type="button">המשך</button>
+  </div>
+</nav>
+
+<script>
+/* ======================================================================
+   CONTENT – per the questionnaire plan (25.10.2026), word for word
+   ====================================================================== */
+const SOMEONE = 'מישהו אחר — מי?';
+const FORM = {
+  key: 'forum-crm-intake-v1',
+  title: 'שאלון אפיון — מערכת CRM ל-FORUM BUSINESS CLUB',
+  subtitle: 'כ-15 דקות · 7 שלבים · אפשר לעצור ולהמשיך אחר כך',
+  introHTML: `
+    <p>שלום דימה ועודד,</p>
+    <p>השאלון הזה עוזר לנו להבין מה בדיוק המערכת צריכה לעשות — לפני שמאפיינים אותה, לפני תמחור ההקמה ולפני שמעריכים את העלויות החודשיות (לא רק העבודה שלנו, אלא גם רישיונות, הודעות וסוכנים — ובשביל זה יש בשאלון גם כמה שאלות על כמויות).</p>
+    <p><b>במה מתמקדים:</b> רק במערכת ה-CRM — המקום האחד שבו מנהלים את כל הפניות, הלקוחות, ההזמנות, הדיירים, המסמכים והתשלומים של המתחם. השיווק (קמפיינים) והברים (קופה) לא נמצאים בשאלון הזה.</p>
+    <p><b>הערה על הסוכנים:</b> סוכן ה-AI שעונה בוואטסאפ והקמפיינים במטא ובגוגל הם מערכת נפרדת: היא חיה בתוך וואטסאפ ומטא ויש לה עלויות שוטפות משלה. הסוכן מתחבר ל-CRM — רושם בה כל פנייה, קורא ממנה זמינות ומחירים, ומעביר אליכם את השיחה כשצריך אדם. לכן יש כאן שלב קצר אחד על הסוכנים: רק מה שה-CRM צריך לדעת כדי לעבוד איתם. את הסוכנים עצמם נאפיין בנפרד, אחרי השאלון הזה.</p>
+    <p><b>איך ממלאים:</b></p>
+    <ul>
+      <li>מומלץ למלא ביחד, כמו שסיכמנו. רוב השאלות הן סימון מרשימה.</li>
+      <li>אין תשובות נכונות או לא נכונות. הערכה גסה מספיקה, ואפשר לסמן "עוד לא החלטנו".</li>
+      <li>רק שלושת שדות הקשר בהתחלה הם חובה — את כל השאר אפשר לדלג.</li>
+      <li>אפשר לעצור באמצע ולהמשיך אחר כך: התשובות נשמרות במכשיר שבו התחלתם, אז כדאי לסיים באותו מכשיר.</li>
+    </ul>
+    <p>אחרי השליחה נעבור על התשובות ונחזור אליכם עם הצעה מסודרת.</p>`,
+  steps: [
+    { title: 'פרטים ומי מחליט', short: 'פרטים ומי מחליט', minutes: 'דקה',
+      lead: 'שלוש שאלות קצרות — כדי שנדע עם מי לדבר ומי מחליט.',
+      questions: [
+        { id: 'Q01', type: 'single', required: true, label: 'מי ממלא את השאלון?',
+          options: ['דימה ועודד ביחד', 'דימה', 'עודד', SOMEONE], otherLabel: SOMEONE, otherRequired: true, otherPlaceholder: 'שם' },
+        { id: 'Q02', type: 'group', label: 'פרטי קשר', help: 'לכאן נשלח את ההצעה ואת השאלות אם משהו לא ברור.',
+          errorMsg: 'כדי שנוכל לחזור אליכם — צריך טלפון ומייל.',
+          fields: [
+            { id: 'Q02a', type: 'tel', label: 'טלפון נייד', required: true, placeholder: '05X-XXXXXXX' },
+            { id: 'Q02b', type: 'email', label: 'כתובת מייל', required: true, placeholder: 'name@example.com' } ] },
+        { id: 'Q03', type: 'group', label: 'מי מחליט ומי איש הקשר',
+          help: 'איש קשר אחד חוסך הרבה זמן לכולם. המאשר יכול להיות מישהו אחר מאיש הקשר השוטף.',
+          fields: [
+            { id: 'Q03a', type: 'single', label: 'מי מאשר החלטות על המערכת (תקציב, שינויים)?',
+              options: ['דימה', 'עודד', 'שניהם ביחד', SOMEONE], otherLabel: SOMEONE, otherPlaceholder: 'שם' },
+            { id: 'Q03b', type: 'single', label: 'מי יהיה איש הקשר השוטף מולנו במהלך האפיון והבנייה?',
+              options: ['דימה', 'עודד', 'מנהלת המתחם — כבר יש', 'מנהלת המתחם — תגויס בהמשך', SOMEONE], otherLabel: SOMEONE, otherPlaceholder: 'שם' } ] }
+      ] },
+
+    { title: 'מה המערכת צריכה לכסות, ומה דחוף', short: 'מה המערכת צריכה לכסות', minutes: '3 דקות',
+      lead: 'בפגישה אמרתם שאתם רוצים מקום אחד שבו קורה הכול — מכירות, שיווק ותפעול. כאן נבין מה מתוך זה חייב להיות מוכן ביום הפתיחה, ומה יכול לחכות.',
+      questions: [
+        { id: 'Q04', type: 'matrix', nudge: true,
+          label: 'לכל תחום — סמנו: חייב ליום הפתיחה, יכול לחכות לאחרי הפתיחה, או לא צריך',
+          help: '"יכול לחכות" זו תשובה טובה — היא עוזרת לנו להציע לכם להתחיל ממה שחייב ולהוסיף בהמשך.',
+          cols: ['חייב ליום הפתיחה', 'יכול לחכות', 'לא צריך'],
+          rows: [
+            { id: 'Q04_1', label: 'פניות ולידים — כל פנייה ממודעה, מהאתר או מוואטסאפ נרשמת ומטופלת עד סגירה (ליד = פנייה של לקוח שעוד לא נסגרה)' },
+            { id: 'Q04_2', label: 'יומן זמינות והזמנות של החדרים — ישיבות, פודקאסט, אולם' },
+            { id: 'Q04_3', label: 'הזמנה ותשלום עצמאיים מהאתר, בלי לדבר איתכם' },
+            { id: 'Q04_4', label: 'ניהול דיירי המשרדים — פרטים, חוזה, תשלום חודשי' },
+            { id: 'Q04_5', label: 'הצעות מחיר ומסמכים לחתימה' },
+            { id: 'Q04_6', label: 'גבייה ותשלומים — כרטיס אשראי, מקדמות' },
+            { id: 'Q04_7', label: 'אירועים וכנסים — רישום משתתפים ואישורי הגעה' },
+            { id: 'Q04_8', label: 'הודעות שוטפות ללקוחות — חג שמח, עדכונים, ימי הולדת' },
+            { id: 'Q04_9', label: 'ספקים ועובדים — משימות, משמרות, הזמנות מספקים' },
+            { id: 'Q04_10', label: 'דוחות להנהלה — הכנסות, תפוסה, מאיפה מגיעות הפניות' } ] },
+        { id: 'Q05', type: 'text', label: 'אם המערכת תפתור רק דבר אחד בשלב הראשון — מה הוא?',
+          help: 'במילים שלכם. זה עוזר לנו לסדר עדיפויות נכון.' },
+        { id: 'Q06', type: 'single', label: 'הבנו שהברים יתנהלו בקופה נפרדת (כמו Tabit), ולא בתוך המערכת הזו. נכון?',
+          options: ['נכון', 'לא — נרצה לדבר על זה'] }
+      ] },
+
+    { title: 'החללים והמחירים', short: 'החללים והמחירים', minutes: '3 דקות',
+      lead: 'כדי שהמערכת תדע מה אפשר להזמין, לכמה זמן ובאיזה אופן. לא צריך מחירים — רק את השיטה.',
+      questions: [
+        { id: 'Q07', type: 'matrix', multi: true, nudge: true, rowExclusive: 'לא להשכרה',
+          label: 'לכל חלל — איך מוכרים אותו? אפשר לסמן יותר מאפשרות אחת בשורה',
+          cols: ['לפי שעה', 'לפי יום', 'מנוי חודשי', 'לפי הצעת מחיר', 'לא להשכרה'],
+          rows: [
+            { id: 'Q07_1', label: 'משרדים פרטיים (10)' },
+            { id: 'Q07_2', label: 'חדר ישיבות גדול' },
+            { id: 'Q07_3', label: 'חדר ישיבות קטן' },
+            { id: 'Q07_4', label: 'חדר פודקאסט' },
+            { id: 'Q07_5', label: 'אולם כנסים ואירועים' },
+            { id: 'Q07_6', label: "לאונג' עבודה (עמדות עבודה)" },
+            { id: 'Q07_7', label: 'מרפסת הגג (לאירועים)' } ] },
+        { id: 'Q08', type: 'multi', layout: 'col', label: 'אילו חללים לקוח יוכל להזמין ולשלם לבד מהאתר, בלי לדבר איתכם?',
+          help: 'סמנו רק חללים שבהם אתם מוכנים שהלקוח יסגור לבד — בוחר מועד, משלם ומקבל אישור. כל השאר יעבור דרך אדם.',
+          options: ['משרדים פרטיים', 'חדר ישיבות גדול', 'חדר ישיבות קטן', 'חדר פודקאסט', 'אולם כנסים ואירועים', "לאונג' עבודה", 'מרפסת הגג', 'אף אחד — כל הזמנה עוברת דרך איש מכירות'],
+          exclusive: 'אף אחד — כל הזמנה עוברת דרך איש מכירות' },
+        { id: 'Q09', type: 'single', label: 'יש לכם כבר מחירון?',
+          help: 'לא צריך לצרף אותו — רק לדעת אם קיים. המחירון הוא מה שהמערכת (וגם סוכן הוואטסאפ) תצטרך כדי לענות ללקוחות.',
+          options: ['יש מחירון מלא', 'יש כיוון כללי, עוד לא סופי', 'אין עדיין'] },
+        { id: 'Q10', type: 'single', label: 'האם חבילת משרד פרטי תכלול שימוש בחדרי הישיבות?',
+          help: 'זה קובע איך יומן ההזמנות סופר שעות לדיירים.',
+          options: ['כן — מכסה חודשית של שעות', 'כן — בהנחה לדיירים', 'לא — כל שימוש בתשלום מלא', 'עוד לא החלטנו'] }
+      ] },
+
+    { title: 'כמויות', short: 'כמויות', minutes: '2 דקות',
+      lead: 'הערכה גסה מספיקה — אין פה תשובות נכונות. הכמויות קובעות את העלויות השוטפות: הודעות, רישיונות, אחסון.',
+      questions: [
+        { id: 'Q11', type: 'single', label: 'כמה אנשי צוות יעבדו בתוך המערכת?',
+          help: 'מי שייכנס למערכת ויעבוד בה: מנהלת מתחם, מכירות, שיווק, הנהלת חשבונות, בעלים.',
+          options: ['אחד', '2–3', '4–6', '7 ומעלה'] },
+        { id: 'Q12', type: 'single', label: 'כמה פניות חדשות (לידים) אתם מצפים בחודש, אחרי שהפרסום רץ?',
+          help: 'מכל המקורות יחד — מודעות, אתר, וואטסאפ, טלפון, המלצות.',
+          options: ['עד 30', '30–100', '100–300', 'מעל 300', 'קשה להעריך'] },
+        { id: 'Q13', type: 'single', label: 'כמה הזמנות של חדרים (ישיבות, פודקאסט, אולם) אתם מצפים בחודש?',
+          help: 'לא כולל משרדים — הם חודשיים.',
+          options: ['עד 20', '20–60', '60–150', 'מעל 150', 'קשה להעריך'] },
+        { id: 'Q14', type: 'single', label: "כמה אנשים בסך הכול יעבדו במתחם (עובדי הדיירים והלאונג')?",
+          help: 'כל אחד מהם עשוי להיות משתמש במערכת — להזמין חדר, לקבל הודעות.',
+          options: ['עד 30', '30–60', '60–100', 'מעל 100'] },
+        { id: 'Q15', type: 'group', label: 'אירועים וכנסים',
+          fields: [
+            { id: 'Q15a', type: 'single', label: 'כמה אירועים וכנסים בחודש?', options: ['עד 2', '3–5', '6–10', 'מעל 10', 'קשה להעריך'] },
+            { id: 'Q15b', type: 'single', label: 'כמה משתתפים באירוע ממוצע?', options: ['עד 30', '30–80', '80–150', 'מעל 150'] },
+            { id: 'Q15c', type: 'single', label: 'מי מארגן את רוב האירועים?', options: ['לקוחות חיצוניים ששוכרים את האולם', 'אנחנו — אירועים של המתחם', 'גם וגם'] } ] },
+        { id: 'Q16', type: 'group', label: 'קשר שוטף עם לקוחות (חג שמח, עדכונים, הטבות)',
+          fields: [
+            { id: 'Q16a', type: 'single', label: 'עם כמה אנשי קשר תרצו לשמור על קשר בשנה הראשונה? (דיירים ועובדיהם, לקוחות עבר, HR של חברות)',
+              options: ['עד 200', '200–1,000', '1,000–5,000', 'מעל 5,000', 'קשה להעריך'] },
+            { id: 'Q16b', type: 'single', label: 'באיזו תדירות?', options: ['חגים בלבד', 'פעם בחודש בערך', 'פעם בשבוע בערך', 'לפי צורך, בלי קביעות'] },
+            { id: 'Q16c', type: 'multi', label: 'באילו ערוצים? (אפשר כמה)', options: ['וואטסאפ', 'מייל', 'SMS', 'עוד לא החלטנו'], exclusive: 'עוד לא החלטנו' } ] }
+      ] },
+
+    { title: 'כסף, מסמכים ומערכות קיימות', short: 'כסף, מסמכים ומערכות', minutes: '3 דקות',
+      lead: 'מה כבר קיים אצלכם ואיך תרצו לגבות — כדי שנדע מה מתחבר, מה צריך להקים ומה אפשר לחסוך.',
+      questions: [
+        { id: 'Q17', type: 'single', label: 'איזו תוכנה להנהלת חשבונות ולהפקת חשבוניות תשמש את FORUM?',
+          help: 'אם לא בטוחים — הרו"ח יודע, ואפשר להשלים אחר כך. זה קובע אם אפשר להפיק חשבוניות אוטומטית מהמערכת (כולל מספרי הקצאה של רשות המסים).',
+          options: ['חשבשבת', 'פריוריטי', 'רווחית', 'חשבונית ירוקה (morning)', 'iCount', 'SUMIT', 'תוכנה אחרת — איזו?', 'אין לנו תוכנה — הרו"ח מפיק הכול', 'עוד לא החלטנו'],
+          otherLabel: 'תוכנה אחרת — איזו?', otherPlaceholder: 'שם התוכנה' },
+        { id: 'Q18', type: 'multi', layout: 'col', label: 'איך תרצו לגבות תשלומים? (אפשר כמה)',
+          options: ['כרטיס אשראי באתר, ברגע ההזמנה', 'מקדמה לשריון אולם או אירוע', 'חיוב חודשי אוטומטי לדיירים בכרטיס אשראי', 'העברה בנקאית או הוראת קבע', 'חשבונית ותשלום בהמשך (שוטף+)', 'עוד לא החלטנו'],
+          exclusive: 'עוד לא החלטנו' },
+        { id: 'Q19', type: 'single', label: 'יש לכם כבר חשבון סליקה לכרטיסי אשראי?',
+          help: 'סליקה = החברה שמעבירה את התשלום מכרטיס האשראי של הלקוח לחשבון הבנק שלכם (למשל טרנזילה, קארדקום, פלאקארד, או דרך הבנק).',
+          showIf: { q: 'Q18', in: ['כרטיס אשראי באתר, ברגע ההזמנה', 'מקדמה לשריון אולם או אירוע', 'חיוב חודשי אוטומטי לדיירים בכרטיס אשראי'] },
+          options: ['כן — עם מי?', 'לא, צריך לפתוח', 'לא יודעים'], otherLabel: 'כן — עם מי?', otherPlaceholder: 'שם החברה' },
+        { id: 'Q20', type: 'multi', layout: 'col', label: 'אילו מסמכים תרצו שהלקוח יחתום בתוך המערכת? (אפשר כמה)',
+          options: ['הסכם שכירות למשרד', 'הסכם אירוע או כנס', 'תנאי הזמנה לחדר ישיבות או פודקאסט', 'אישור הצעת מחיר', 'מסמך אחר — איזה?', 'אין צורך בחתימה בתוך המערכת'],
+          otherLabel: 'מסמך אחר — איזה?', otherPlaceholder: 'איזה מסמך', exclusive: 'אין צורך בחתימה בתוך המערכת' },
+        { id: 'Q21', type: 'single', layout: 'col', label: 'איזו רמת חתימה נדרשת?',
+          help: 'ההבדל הוא בעלות ובמורכבות. אם לא בטוחים — שאלו את עורך הדין, ואפשר להשלים אחר כך.',
+          showIf: { q: 'Q20', notIn: ['אין צורך בחתימה בתוך המערכת'] },
+          options: ['מספיק אישור בלחיצה עם תיעוד (שם, טלפון, תאריך ושעה)', 'נדרשת חתימה דיגיטלית מאומתת דרך ספק חיצוני (כמו בבנקים)', 'לא יודעים — נבדוק עם עורך הדין'] },
+        { id: 'Q22', type: 'multi', label: 'במה אתם מנהלים היום פניות ולקוחות — גם בעסקים האחרים שלכם? (אפשר כמה)',
+          help: 'כדי לדעת מה מוכר לכם, ומה אולי צריך לייבא או לחבר.',
+          options: ['אקסל או Google Sheets', 'וואטסאפ ומחברת', 'Salesforce', 'Fireberry (לשעבר Powerlink)', 'HubSpot', 'Monday', 'מערכת אחרת — איזו?', 'עדיין כלום ל-FORUM'],
+          otherLabel: 'מערכת אחרת — איזו?', otherPlaceholder: 'שם המערכת' },
+        { id: 'Q23', type: 'single', layout: 'col', label: 'איזה מייל ויומן משמשים את העסק?',
+          help: 'לתיאום סיורים ופגישות ישירות ביומן שלכם.',
+          options: ['Google Workspace (Gmail ויומן גוגל)', 'Microsoft 365 (Outlook)', 'מייל רגיל, בלי יומן משותף', 'לא יודעים'] }
+      ] },
+
+    { title: 'הסוכנים — רק מה שה-CRM צריך לדעת', short: 'הסוכנים', minutes: 'דקה',
+      lead: 'תזכורת: הסוכנים (וואטסאפ, מטא, גוגל) הם מערכת נפרדת ונאפיין אותם אחרי השאלון. כאן רק שתי שאלות — מה ה-CRM צריך לאפשר להם, ועם איזה מספר הם יעבדו.',
+      questions: [
+        { id: 'Q24', type: 'multi', layout: 'col', label: 'מה תרצו שסוכן הוואטסאפ יוכל לעשות לבד, בלי אדם? (אפשר כמה)',
+          help: 'מה שלא מסומן — יעבור לאדם. אפשר לשנות בהמשך.',
+          options: ['לענות על שאלות על המתחם, החללים והמחירים', 'לרשום כל פנייה במערכת כליד, עם סטטוס', 'לבדוק זמינות ולהציע מועדים לחדר ישיבות או פודקאסט', 'לסגור הזמנה של חדר ישיבות או פודקאסט, כולל תשלום', 'לשריין תאריך לאולם כנסים ולגבות מקדמה', 'לקבוע סיור או פגישה ביומן שלכם', 'לשלוח הצעת מחיר ראשונית למשרד', 'אף אחד מאלה — רק לענות ולהעביר לאדם'],
+          exclusive: 'אף אחד מאלה — רק לענות ולהעביר לאדם' },
+        { id: 'Q25', type: 'single', layout: 'col', label: 'איזה מספר וואטסאפ יש ל-FORUM היום?',
+          help: 'סוכן אוטומטי צריך מספר ייעודי, שלא פתוח באפליקציית וואטסאפ רגילה בטלפון. לא צריך לפתור את זה עכשיו — רק לדעת.',
+          options: ['יש מספר עסקי ייעודי ל-FORUM', 'כרגע הטלפון האישי של דימה או עודד', 'אין עדיין'] }
+      ] },
+
+    { title: 'תאריכים ותקציב', short: 'תאריכים ותקציב', minutes: '2 דקות',
+      lead: 'שלוש אחרונות. התקציב לא חובה ולא מחייב — הוא רק עוזר לנו להתאים את ההצעה למסגרת שלכם.',
+      questions: [
+        { id: 'Q26', type: 'group', label: 'תאריכים',
+          help: 'בפגישה עלו כמה תאריכים. נעזר בזה שאתם מתכננים לפיו היום — אפשר לשנות בהמשך.',
+          fields: [
+            { id: 'Q26a', type: 'single', label: 'לאיזה תאריך פתיחה (אכלוס) אתם מתכננים כרגע?', options: ['ינואר 2027', 'פברואר 2027', 'מרץ 2027', 'אפריל 2027', 'עוד לא נקבע'] },
+            { id: 'Q26b', type: 'single', label: 'ממתי תרצו להתחיל למכור משרדים ולשריין אירועים?', options: ['כבר עכשיו', 'דצמבר 2026', 'ינואר 2027', 'רק עם הפתיחה'] } ] },
+        { id: 'Q27', type: 'group', label: 'סדר גודל של תקציב (לא חובה, לא מחייב)',
+          help: 'עוזר לנו להציע נכון — למשל להתחיל ממה שחייב לפתיחה ולהוסיף בהמשך. החודשי כולל גם רישיונות, הודעות ותחזוקה, לא רק את העבודה שלנו.',
+          fields: [
+            { id: 'Q27a', type: 'single', label: 'השקעה חד-פעמית בהקמה', options: ['עד 15,000 ₪', '15,000–30,000 ₪', '30,000–60,000 ₪', '60,000–100,000 ₪', 'מעל 100,000 ₪', 'עוד לא יודעים'] },
+            { id: 'Q27b', type: 'single', label: 'עלות חודשית כוללת (רישיונות, הודעות, סוכנים, תחזוקה)', options: ['עד 1,000 ₪', '1,000–2,500 ₪', '2,500–5,000 ₪', 'מעל 5,000 ₪', 'עוד לא יודעים'] } ] },
+        { id: 'Q28', type: 'textarea', label: 'יש משהו שלא שאלנו ורציתם שנדע?',
+          help: 'רעיונות, חששות, דברים שחשובים לכם במיוחד — הכול מתקבל.' }
+      ] }
+  ],
+  finishTitle: name => `תודה${name ? ', ' + name : ''}! השאלון התקבל.`,
+  finishHTML: `
+    <p>מה קורה עכשיו:</p>
+    <ol>
+      <li>נעבור על התשובות. אם משהו לא ברור — נשאל אתכם בוואטסאפ או בטלפון.</li>
+      <li>נחזור אליכם עם הצעה מסודרת למערכת ה-CRM, כמו שסיכמנו בפגישה.</li>
+      <li>את הסוכנים (וואטסאפ, מטא, גוגל) נאפיין בנפרד, אחרי שנסגור את ה-CRM.</li>
+    </ol>
+    <p>אפשר לסגור את הדף. אם נזכרתם במשהו — פשוט כתבו לנו.</p>`,
+  finishFine: 'השאלון נשלח למאיר לביא, AI Lab Pro. התשובות נשארות אצלנו ולא עוברות לאף גורם אחר.'
+};
+/* ====================================================================== */
+
+const WEB3FORMS_KEY = '9ba5abaf-d501-44db-a33d-d5028c89e0ef';
+const $ = (s, el = document) => el.querySelector(s);
+const app = $('#app'), nav = $('#nav'), bar = $('#bar');
+let answers = {}, cur = -1, startedAt = null;
+const nudged = {};
+const N = () => FORM.steps.length;
+const ARROW_L = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg>';
+const SEND_IC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 3L10 14M21 3l-7 18-4-7-7-4z"/></svg>';
+
+/* ---------- storage (best effort) ---------- */
+const store = {
+  get() { try { return JSON.parse(localStorage.getItem(FORM.key) || 'null') } catch (e) { return null } },
+  set(v) { try { localStorage.setItem(FORM.key, JSON.stringify(v)); return true } catch (e) { return false } },
+  clear() { try { localStorage.removeItem(FORM.key) } catch (e) {} }
+};
+function save() {
+  if (store.set({ answers, cur, startedAt })) $('#savedMsg').textContent = 'התשובות נשמרות אוטומטית במכשיר הזה';
+}
+
+/* ---------- model helpers ---------- */
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+// every answerable field (group fields and matrix rows flattened), with its question and step
+function fieldsOf(q) {
+  if (q.type === 'group') return q.fields.map(f => ({ ...f, parent: q, outLabel: `${q.label} — ${f.label}` }));
+  if (q.type === 'matrix') return q.rows.map(r => ({ id: r.id, type: q.multi ? 'multi' : 'single', options: q.cols, exclusive: q.rowExclusive, parent: q, label: r.label, outLabel: r.label }));
+  return [{ ...q, parent: q, outLabel: q.label }];
+}
+const allFields = () => FORM.steps.flatMap(s => s.questions.flatMap(fieldsOf));
+const fieldById = id => allFields().find(f => f.id === id);
+function visible(q) {
+  if (!q.showIf) return true;
+  const v = answers[q.showIf.q];
+  const vals = Array.isArray(v) ? v : (v ? [v] : []);
+  if (q.showIf.in) return vals.some(x => q.showIf.in.includes(x));
+  if (q.showIf.notIn) return vals.length > 0 && !vals.some(x => q.showIf.notIn.includes(x));
+  return vals.length > 0;
+}
+const fieldVisible = f => visible(f.parent);
+function empty(id) {
+  const v = answers[id];
+  return Array.isArray(v) ? v.length === 0 : (v === undefined || v === null || String(v).trim() === '');
+}
+function display(f) {
+  let v = answers[f.id];
+  if (v === undefined || v === '' || (Array.isArray(v) && !v.length)) return '';
+  const other = (answers[f.id + '_other'] || '').trim();
+  const withOther = x => (f.otherLabel && x === f.otherLabel && other) ? `${x.replace(/ — .*\?$/, '')}: ${other}` : x;
+  return Array.isArray(v) ? v.map(withOther).join(' | ') : withOther(String(v));
+}
+function fillerName() {
+  const v = answers.Q01;
+  if (!v) return '';
+  if (v === 'דימה ועודד ביחד') return 'דימה ועודד';
+  if (v === SOMEONE) return (answers.Q01_other || '').trim();
+  return v;
+}
+
+/* ---------- rendering ---------- */
+function choicesHTML(f, cls = '') {
+  const v = answers[f.id];
+  const multi = f.type === 'multi';
+  const col = f.layout === 'col' ? ' col' : '';
+  let h = `<div class="chips${col} ${cls}">` + f.options.map(o => {
+    const checked = multi ? (Array.isArray(v) && v.includes(o)) : v === o;
+    return `<label class="chip ${multi ? 'multi' : ''}"><input type="${multi ? 'checkbox' : 'radio'}" name="${f.id}" value="${esc(o)}" ${checked ? 'checked' : ''}><span>${esc(o)}</span></label>`;
+  }).join('') + '</div>';
+  if (f.otherLabel) {
+    const on = multi ? (Array.isArray(v) && v.includes(f.otherLabel)) : v === f.otherLabel;
+    h += `<input class="other-in ${on ? 'on' : ''}" type="text" data-other="${f.id}" placeholder="${esc(f.otherPlaceholder || 'פרטו בקצרה')}" value="${esc(answers[f.id + '_other'] || '')}">`;
+  }
+  return h;
+}
+function inputHTML(f) {
+  const v = answers[f.id] || '';
+  if (f.type === 'textarea') return `<div class="field"><textarea name="${f.id}" placeholder="${esc(f.placeholder || '')}">${esc(v)}</textarea></div>`;
+  const t = { tel: 'tel', email: 'email' }[f.type] || 'text';
+  const extra = f.type === 'tel' ? ' inputmode="tel" autocomplete="tel"' : f.type === 'email' ? ' autocomplete="email"' : '';
+  return `<div class="field"><input type="${t}" name="${f.id}" placeholder="${esc(f.placeholder || '')}" value="${esc(v)}"${extra}></div>`;
+}
+function controlHTML(f) {
+  return (f.type === 'single' || f.type === 'multi') ? choicesHTML(f) : inputHTML(f);
+}
+function qHTML(q) {
+  const anyReq = q.required || (q.fields || []).some(f => f.required);
+  const tag = anyReq ? '<span class="req" aria-hidden="true">*</span>' : '';
+  const opt = anyReq ? '' : '<span class="opt">(לא חובה)</span>';
+  const help = q.help ? `<div class="q-help">${q.help}</div>` : '';
+  let body = '';
+  if (q.type === 'group') {
+    body = q.fields.map(f => (f.type === 'single' || f.type === 'multi')
+      ? `<div class="sub-q"><div class="sub-label">${f.label}</div>${choicesHTML(f)}</div>`
+      : `<label class="field-label" for="in-${f.id}">${f.label}</label>${inputHTML(f).replace(`name="${f.id}"`, `id="in-${f.id}" name="${f.id}"`)}`).join('');
+  } else if (q.type === 'matrix') {
+    body = q.rows.map(r => `<div class="mrow"><div class="mrow-label">${r.label}</div>${choicesHTML({ id: r.id, type: q.multi ? 'multi' : 'single', options: q.cols })}</div>`).join('')
+      + `<div class="nudge" id="nudge-${q.id}"><p>לא סימנתם כלום בשלב הזה — להמשיך בכל זאת?</p><div class="row-btns"><button class="btn primary small" type="button" data-nudge-go>כן, להמשיך</button><button class="btn ghost small" type="button" data-nudge-back>חזרה למילוי</button></div></div>`;
+  } else body = controlHTML(q);
+  const err = q.errorMsg || (q.type === 'multi' ? 'צריך לבחור לפחות אפשרות אחת' : 'זו שאלת חובה');
+  return `<div class="q ${visible(q) ? '' : 'hidden'}" data-q="${q.id}">
+      <div class="q-label">${tag}${q.label}${opt}</div>${help}${body}
+      <div class="q-err">${err}</div></div>`;
+}
+
+function renderIntro() {
+  const saved = store.get();
+  const has = saved && saved.answers && Object.keys(saved.answers).length;
+  app.innerHTML = `<section class="screen">
+      <h1>שאלון אפיון — מערכת CRM ל-<bdi>FORUM BUSINESS CLUB</bdi></h1>
+      <div class="sub">${esc(FORM.subtitle)}</div>
+      <div class="card intro">${FORM.introHTML}</div>
+      ${has ? '<div class="resume">שמרנו את התשובות שלכם במכשיר הזה. ממשיכים מאיפה שעצרתם?</div>' : ''}
+      <div class="row-btns">
+        <button class="btn primary" id="startBtn" type="button">${has ? 'להמשיך' : 'מתחילים'}</button>
+        ${has ? '<button class="btn ghost" id="restartBtn" type="button">להתחיל מחדש</button>' : ''}
+      </div></section>`;
+  nav.hidden = true; bar.style.width = '0%'; $('#topLabel').textContent = 'שאלון אפיון · מערכת CRM';
+  $('#startBtn').onclick = () => {
+    if (has) { answers = saved.answers; startedAt = saved.startedAt || Date.now(); go(Math.min(Math.max(saved.cur, 0), N())); }
+    else { startedAt = Date.now(); go(0); }
+  };
+  const rb = $('#restartBtn');
+  if (rb) rb.onclick = () => { store.clear(); answers = {}; startedAt = null; renderIntro(); };
+}
+
+function renderStep(i) {
+  const s = FORM.steps[i];
+  app.innerHTML = `<section class="screen">
+      <div class="step-meta">שלב ${i + 1} מתוך ${N()} · ${s.minutes}</div>
+      <h2 class="step-title">${esc(s.title)}</h2>
+      <p class="step-lead">${s.lead}</p>
+      ${s.questions.map(qHTML).join('')}</section>`;
+  nav.hidden = false;
+  $('#backBtn').style.visibility = 'visible';
+  $('#nextBtn').innerHTML = (i === N() - 1 ? 'לבדיקה ושליחה' : 'המשך') + ARROW_L;
+  $('#topLabel').textContent = `שלב ${i + 1} מתוך ${N()} · ${s.short}`;
+  bar.style.width = `${(i / (N() + 1)) * 100}%`;
+  bind(s);
+}
+
+function bind(s) {
+  app.querySelectorAll('input,textarea').forEach(el => {
+    const ev = (el.type === 'radio' || el.type === 'checkbox') ? 'change' : 'input';
+    el.addEventListener(ev, () => {
+      if (el.dataset.other) { answers[el.dataset.other + '_other'] = el.value; el.closest('.q').classList.remove('err'); save(); return; }
+      const f = fieldById(el.name); if (!f) return;
+      if (f.type === 'multi') {
+        let arr = [...app.querySelectorAll(`input[name="${f.id}"]:checked`)].map(x => x.value);
+        if (f.exclusive && el.checked) {
+          if (el.value === f.exclusive) { app.querySelectorAll(`input[name="${f.id}"]`).forEach(x => { if (x.value !== f.exclusive) x.checked = false }); arr = [f.exclusive]; }
+          else { app.querySelectorAll(`input[name="${f.id}"]`).forEach(x => { if (x.value === f.exclusive) x.checked = false }); arr = arr.filter(x => x !== f.exclusive); }
+        }
+        answers[f.id] = arr;
+      } else answers[f.id] = el.value;
+      if (f.otherLabel) {
+        const box = app.querySelector(`[data-other="${f.id}"]`);
+        const on = Array.isArray(answers[f.id]) ? answers[f.id].includes(f.otherLabel) : answers[f.id] === f.otherLabel;
+        if (box) { box.classList.toggle('on', on); if (on && el.checked && el.value === f.otherLabel) box.focus(); }
+      }
+      const card = el.closest('.q'); if (card) card.classList.remove('err');
+      s.questions.forEach(q => { const c = app.querySelector(`[data-q="${q.id}"]`); if (c) c.classList.toggle('hidden', !visible(q)); });
+      const nz = el.closest('.q') && el.closest('.q').querySelector('.nudge'); if (nz) nz.classList.remove('on');
+      save();
+    });
+  });
+  app.querySelectorAll('[data-nudge-go]').forEach(b => b.onclick = () => { nudged[cur] = true; go(cur + 1); });
+  app.querySelectorAll('[data-nudge-back]').forEach(b => b.onclick = () => { b.closest('.nudge').classList.remove('on'); b.closest('.q').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+}
+
+function validateStep(i) {
+  let firstBad = null;
+  const flag = (q, bad) => { const c = app.querySelector(`[data-q="${q.id}"]`); if (c) c.classList.toggle('err', bad); if (bad && !firstBad) firstBad = c; };
+  FORM.steps[i].questions.forEach(q => {
+    if (!visible(q)) return;
+    let bad = false;
+    fieldsOf(q).forEach(f => {
+      if (f.required && empty(f.id)) bad = true;
+      if (f.type === 'email' && !empty(f.id) && !/^\S+@\S+\.\S+$/.test(answers[f.id])) bad = true;
+      if (f.type === 'tel' && !empty(f.id) && String(answers[f.id]).replace(/\D/g, '').length < 9) bad = true;
+      if (f.otherRequired && answers[f.id] === f.otherLabel && empty(f.id + '_other')) bad = true;
+    });
+    flag(q, bad);
+  });
+  if (firstBad) { firstBad.scrollIntoView({ behavior: 'smooth', block: 'center' }); return false; }
+  // soft nudge for empty matrices (once per step)
+  if (!nudged[i]) {
+    const m = FORM.steps[i].questions.find(q => q.type === 'matrix' && q.nudge && q.rows.every(r => empty(r.id)));
+    if (m) { const nz = $('#nudge-' + m.id); nz.classList.add('on'); nz.scrollIntoView({ behavior: 'smooth', block: 'center' }); return false; }
+  }
+  return true;
+}
+
+function renderReview() {
+  app.innerHTML = `<section class="screen review">
+      <div class="step-meta">כמעט סיימנו</div>
+      <h2 class="step-title">בדיקה לפני שליחה</h2>
+      <p class="step-lead">אפשר לעבור על התשובות ולערוך כל שלב. כשהכול נראה טוב — לוחצים "שליחה".</p>
+      ${FORM.steps.map((s, i) => `<h3><span>${esc(s.title)}</span><button type="button" data-edit="${i}">לערוך</button></h3><dl>` +
+        s.questions.filter(visible).map(q => (q.type === 'matrix' ? `<dt style="color:var(--gold);font-weight:600">${q.label}</dt>` : '') + fieldsOf(q).map(f => { const d = display(f); return `<dt>${f.outLabel}</dt><dd class="${d ? '' : 'empty'}">${d ? esc(d) : 'לא נענה'}</dd>`; }).join('')).join('') + '</dl>').join('')}
+      <div class="send-err" id="sendErr">השליחה לא הצליחה. התשובות שמורות — נסו שוב בעוד רגע, או <a href="#" id="dlLink">הורידו את התשובות כקובץ</a> ושלחו אותו למאיר בוואטסאפ.</div>
+    </section>`;
+  nav.hidden = false;
+  $('#nextBtn').innerHTML = 'שליחה' + SEND_IC;
+  $('#topLabel').textContent = 'בדיקה לפני שליחה';
+  bar.style.width = `${(N() / (N() + 1)) * 100}%`;
+  app.querySelectorAll('[data-edit]').forEach(b => b.onclick = () => go(+b.dataset.edit));
+  $('#dlLink').onclick = e => { e.preventDefault(); download(); };
+}
+
+function renderDone() {
+  app.innerHTML = `<section class="screen"><div class="card">
+      <div class="done-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#1d160d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+      <h1 style="text-align:center">${esc(FORM.finishTitle(fillerName()))}</h1>
+      <div class="intro" style="margin-top:16px">${FORM.finishHTML}</div>
+      <p class="fine">${esc(FORM.finishFine)}</p>
+      <p class="fine"><a href="#" id="dlDone" style="color:var(--gold)">להורדת עותק של התשובות</a></p></div></section>`;
+  nav.hidden = true; bar.style.width = '100%'; $('#topLabel').textContent = 'השאלון התקבל';
+  $('#dlDone').onclick = e => { e.preventDefault(); download(); };
+}
+
+function go(i) {
+  cur = i; save();
+  if (i < 0) renderIntro();
+  else if (i < N()) renderStep(i);
+  else if (i === N()) renderReview();
+  else renderDone();
+  window.scrollTo(0, 0);
+}
+
+/* ---------- output ---------- */
+function plainText() {
+  const mins = startedAt ? Math.round((Date.now() - startedAt) / 60000) : null;
+  const lines = [`שאלון CRM — FORUM — ${display(fieldById('Q01')) || ''}`, `נשלח: ${new Date().toLocaleString('he-IL')}${mins !== null ? ` · זמן מילוי: כ-${mins} דקות` : ''}`, ''];
+  FORM.steps.forEach((s, i) => {
+    lines.push(`== שלב ${i + 1}: ${s.title} ==`);
+    s.questions.filter(visible).flatMap(fieldsOf).forEach(f => lines.push(`${f.id} | ${f.outLabel} | ${display(f) || '—'}`));
+    lines.push('');
+  });
+  return lines.join('\n');
+}
+function download() {
+  const blob = new Blob(['﻿' + plainText()], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'forum-crm-answers.txt'; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+async function submit() {
+  const btn = $('#nextBtn'); btn.disabled = true; btn.textContent = 'שולח…';
+  const fd = new FormData();
+  fd.append('access_key', WEB3FORMS_KEY);
+  fd.append('subject', `שאלון CRM — FORUM — ${display(fieldById('Q01')) || ''}`);
+  fd.append('from_name', 'FORUM BUSINESS CLUB');
+  fd.append('botcheck', '');
+  fd.append('Full_Answers', plainText());
+  allFields().filter(fieldVisible).forEach(f => fd.append(f.id, display(f) || '—'));
+  let ok = false;
+  try {
+    const r = await fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd });
+    const j = await r.json().catch(() => ({}));
+    ok = r.ok && j.success !== false;
+  } catch (e) {}
+  btn.disabled = false;
+  if (ok) go(N() + 1);
+  else { $('#sendErr').classList.add('on'); btn.innerHTML = 'לנסות שוב' + SEND_IC; $('#sendErr').scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+}
+
+/* ---------- nav ---------- */
+$('#nextBtn').onclick = () => {
+  if (cur >= 0 && cur < N()) { if (validateStep(cur)) go(cur + 1); }
+  else if (cur === N()) submit();
+};
+$('#backBtn').onclick = () => go(cur - 1);
+
+renderIntro();
+</script>
+</body>
+</html>
