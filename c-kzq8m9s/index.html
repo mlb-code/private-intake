@@ -153,11 +153,10 @@ h1{font-size:clamp(24px,4.4vw,32px);line-height:1.3;font-weight:700}
 /* ======================================================================
    CONTENT – per the questionnaire plan (25.10.2026), word for word
    ====================================================================== */
-const SOMEONE = 'מישהו אחר — מי?';
 const FORM = {
-  key: 'forum-crm-intake-v1',
+  key: 'forum-crm-intake-v2',
   title: 'שאלון אפיון — מערכת CRM ל-FORUM BUSINESS CLUB',
-  subtitle: 'כ-15 דקות · 7 שלבים · אפשר לעצור ולהמשיך אחר כך',
+  subtitle: 'כ-15 דקות · 6 שלבים · אפשר לעצור ולהמשיך אחר כך',
   introHTML: `
     <p>שלום דימה ועודד,</p>
     <p>השאלון הזה עוזר לנו להבין מה בדיוק המערכת צריכה לעשות — לפני שמאפיינים אותה, לפני תמחור ההקמה ולפני שמעריכים את העלויות החודשיות (לא רק העבודה שלנו, אלא גם רישיונות, הודעות וסוכנים — ובשביל זה יש בשאלון גם כמה שאלות על כמויות).</p>
@@ -165,32 +164,13 @@ const FORM = {
     <p><b>הערה על הסוכנים:</b> סוכן ה-AI שעונה בוואטסאפ והקמפיינים במטא ובגוגל הם מערכת נפרדת: היא חיה בתוך וואטסאפ ומטא ויש לה עלויות שוטפות משלה. הסוכן מתחבר ל-CRM — רושם בה כל פנייה, קורא ממנה זמינות ומחירים, ומעביר אליכם את השיחה כשצריך אדם. לכן יש כאן שלב קצר אחד על הסוכנים: רק מה שה-CRM צריך לדעת כדי לעבוד איתם. את הסוכנים עצמם נאפיין בנפרד, אחרי השאלון הזה.</p>
     <p><b>איך ממלאים:</b></p>
     <ul>
-      <li>מומלץ למלא ביחד, כמו שסיכמנו. רוב השאלות הן סימון מרשימה.</li>
+      <li>אפשר למלא לבד או ביחד. רוב השאלות הן סימון מרשימה.</li>
       <li>אין תשובות נכונות או לא נכונות. הערכה גסה מספיקה, ואפשר לסמן "עוד לא החלטנו".</li>
-      <li>רק שלושת שדות הקשר בהתחלה הם חובה — את כל השאר אפשר לדלג.</li>
+      <li>אין שאלות חובה — אפשר לדלג על כל שאלה.</li>
       <li>אפשר לעצור באמצע ולהמשיך אחר כך: התשובות נשמרות במכשיר שבו התחלתם, אז כדאי לסיים באותו מכשיר.</li>
     </ul>
     <p>אחרי השליחה נעבור על התשובות ונחזור אליכם עם הצעה מסודרת.</p>`,
   steps: [
-    { title: 'פרטים ומי מחליט', short: 'פרטים ומי מחליט', minutes: 'דקה',
-      lead: 'שלוש שאלות קצרות — כדי שנדע עם מי לדבר ומי מחליט.',
-      questions: [
-        { id: 'Q01', type: 'single', required: true, label: 'מי ממלא את השאלון?',
-          options: ['דימה ועודד ביחד', 'דימה', 'עודד', SOMEONE], otherLabel: SOMEONE, otherRequired: true, otherPlaceholder: 'שם' },
-        { id: 'Q02', type: 'group', label: 'פרטי קשר', help: 'לכאן נשלח את ההצעה ואת השאלות אם משהו לא ברור.',
-          errorMsg: 'כדי שנוכל לחזור אליכם — צריך טלפון ומייל.',
-          fields: [
-            { id: 'Q02a', type: 'tel', label: 'טלפון נייד', required: true, placeholder: '05X-XXXXXXX' },
-            { id: 'Q02b', type: 'email', label: 'כתובת מייל', required: true, placeholder: 'name@example.com' } ] },
-        { id: 'Q03', type: 'group', label: 'מי מחליט ומי איש הקשר',
-          help: 'איש קשר אחד חוסך הרבה זמן לכולם. המאשר יכול להיות מישהו אחר מאיש הקשר השוטף.',
-          fields: [
-            { id: 'Q03a', type: 'single', label: 'מי מאשר החלטות על המערכת (תקציב, שינויים)?',
-              options: ['דימה', 'עודד', 'שניהם ביחד', SOMEONE], otherLabel: SOMEONE, otherPlaceholder: 'שם' },
-            { id: 'Q03b', type: 'single', label: 'מי יהיה איש הקשר השוטף מולנו במהלך האפיון והבנייה?',
-              options: ['דימה', 'עודד', 'מנהלת המתחם — כבר יש', 'מנהלת המתחם — תגויס בהמשך', SOMEONE], otherLabel: SOMEONE, otherPlaceholder: 'שם' } ] }
-      ] },
-
     { title: 'מה המערכת צריכה לכסות, ומה דחוף', short: 'מה המערכת צריכה לכסות', minutes: '3 דקות',
       lead: 'בפגישה אמרתם שאתם רוצים מקום אחד שבו קורה הכול — מכירות, שיווק ותפעול. כאן נבין מה מתוך זה חייב להיות מוכן ביום הפתיחה, ומה יכול לחכות.',
       questions: [
@@ -328,7 +308,7 @@ const FORM = {
           help: 'רעיונות, חששות, דברים שחשובים לכם במיוחד — הכול מתקבל.' }
       ] }
   ],
-  finishTitle: name => `תודה${name ? ', ' + name : ''}! השאלון התקבל.`,
+  finishTitle: () => 'תודה! השאלון התקבל.',
   finishHTML: `
     <p>מה קורה עכשיו:</p>
     <ol>
@@ -390,14 +370,6 @@ function display(f) {
   const withOther = x => (f.otherLabel && x === f.otherLabel && other) ? `${x.replace(/ — .*\?$/, '')}: ${other}` : x;
   return Array.isArray(v) ? v.map(withOther).join(' | ') : withOther(String(v));
 }
-function fillerName() {
-  const v = answers.Q01;
-  if (!v) return '';
-  if (v === 'דימה ועודד ביחד') return 'דימה ועודד';
-  if (v === SOMEONE) return (answers.Q01_other || '').trim();
-  return v;
-}
-
 /* ---------- rendering ---------- */
 function choicesHTML(f, cls = '') {
   const v = answers[f.id];
@@ -551,7 +523,7 @@ function renderReview() {
 function renderDone() {
   app.innerHTML = `<section class="screen"><div class="card">
       <div class="done-ic"><svg viewBox="0 0 24 24" fill="none" stroke="#1d160d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
-      <h1 style="text-align:center">${esc(FORM.finishTitle(fillerName()))}</h1>
+      <h1 style="text-align:center">${esc(FORM.finishTitle())}</h1>
       <div class="intro" style="margin-top:16px">${FORM.finishHTML}</div>
       <p class="fine">${esc(FORM.finishFine)}</p>
       <p class="fine"><a href="#" id="dlDone" style="color:var(--gold)">להורדת עותק של התשובות</a></p></div></section>`;
@@ -571,7 +543,7 @@ function go(i) {
 /* ---------- output ---------- */
 function plainText() {
   const mins = startedAt ? Math.round((Date.now() - startedAt) / 60000) : null;
-  const lines = [`שאלון CRM — FORUM — ${display(fieldById('Q01')) || ''}`, `נשלח: ${new Date().toLocaleString('he-IL')}${mins !== null ? ` · זמן מילוי: כ-${mins} דקות` : ''}`, ''];
+  const lines = ['שאלון CRM — FORUM BUSINESS CLUB', `נשלח: ${new Date().toLocaleString('he-IL')}${mins !== null ? ` · זמן מילוי: כ-${mins} דקות` : ''}`, ''];
   FORM.steps.forEach((s, i) => {
     lines.push(`== שלב ${i + 1}: ${s.title} ==`);
     s.questions.filter(visible).flatMap(fieldsOf).forEach(f => lines.push(`${f.id} | ${f.outLabel} | ${display(f) || '—'}`));
@@ -589,7 +561,7 @@ async function submit() {
   const btn = $('#nextBtn'); btn.disabled = true; btn.textContent = 'שולח…';
   const fd = new FormData();
   fd.append('access_key', WEB3FORMS_KEY);
-  fd.append('subject', `שאלון CRM — FORUM — ${display(fieldById('Q01')) || ''}`);
+  fd.append('subject', 'שאלון CRM — FORUM BUSINESS CLUB');
   fd.append('from_name', 'FORUM BUSINESS CLUB');
   fd.append('botcheck', '');
   fd.append('Full_Answers', plainText());
