@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Brain audit — instructions for Claude Code | AI Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FBF7F0;--card:#fff;--ink:#1E1B18;--ink-2:#4F4A44;--ink-3:#8C857C;--line:#E9E2D6;--accent:#1F6F5C;--accent-soft:#E3F1EC;--accent-ink:#0F4A3C}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:17px;line-height:1.55;overflow-x:hidden}
+.wrap{max-width:720px;margin:0 auto;padding:28px 16px 60px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.brand{font-weight:900;text-decoration:none;color:var(--ink)}.brand span{color:var(--accent)}
+.lang{display:flex;border:1.5px solid #D6CCBC;border-radius:999px;overflow:hidden}
+.lang button{font:inherit;font-size:.78rem;font-weight:700;padding:5px 10px;border:0;background:#fff;color:var(--ink-2);cursor:pointer}
+.lang button.on{background:var(--accent);color:#fff}
+h1{font-size:clamp(1.5rem,5vw,2rem);font-weight:900;letter-spacing:-.02em;margin-bottom:8px}
+.lede{color:var(--ink-2);margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 18px;margin-top:18px}
+ol{padding-inline-start:22px;color:var(--ink-2)}li{margin:10px 0}li b{color:var(--ink)}
+.btn{font:inherit;font-size:1.05rem;font-weight:800;color:#fff;background:var(--accent);border:0;border-radius:14px;padding:16px 22px;cursor:pointer;width:100%;box-shadow:0 10px 24px -10px rgba(31,111,92,.6)}
+.btn.done{background:var(--accent-ink)}
+textarea{width:100%;min-height:260px;font:13px/1.5 ui-monospace,Menlo,monospace;color:var(--ink-2);border:1.5px solid #D6CCBC;border-radius:12px;padding:12px;margin-top:14px;background:#fff;resize:vertical}
+.note{background:var(--accent-soft);color:var(--accent-ink);border-radius:12px;padding:12px 14px;font-size:.93rem;margin-top:14px}
+footer{text-align:center;color:var(--ink-3);font-size:.82rem;margin-top:40px}
+</style></head>
+<body><main class="wrap">
+<div class="topbar"><a class="brand" href="https://ai-lab.co.il/">AI<span>·</span>Lab</a>
+<div class="lang"><button type="button" data-lang="en" class="on">EN</button><button type="button" data-lang="es">ES</button></div></div>
+
+<h1 data-es="Auditoría del cerebro">Brain audit</h1>
+<p class="lede" data-es="Instrucciones para tu Claude Code. Copia, pega, di que sí. Unos minutos.">Instructions for your Claude Code. Copy, paste, say yes. A few minutes.</p>
+
+<div class="card">
+<ol>
+<li data-es="Abre la app de <b>Claude</b> en tu Mac. Si te ofrece actualizar, actualiza primero."><b>Open the Claude app</b> on your Mac. If it offers an update, update first.</li>
+<li data-es="Arriba a la izquierda, junto al ícono de chat, haz clic en el ícono <b>&lt;/&gt;</b> (modo Code).">Top-left, next to the chat icon, click the <b>&lt;/&gt;</b> icon (Code mode).</li>
+<li data-es="Abajo del cuadro de mensaje, haz clic en <b>Project or folder</b> y elige tu carpeta <b>Isracap-Brain</b> (dentro de Google Drive).">Below the message box, click <b>Project or folder</b> and choose your <b>Isracap-Brain</b> folder (inside Google Drive).</li>
+<li data-es="Pulsa el botón <b>Copiar</b> de abajo, pega en el cuadro de mensaje de Claude y presiona Enter.">Press the <b>Copy</b> button below, paste into Claude's message box and press Enter.</li>
+<li data-es="Cuando Claude pida permiso para leer archivos o ejecutar un comando, responde <b>Sí</b>. El único archivo que escribe es <b>brain-audit.md</b>.">When Claude asks for permission to read files or run a command, answer <b>Yes</b>. The only file it writes is <b>brain-audit.md</b>.</li>
+<li data-es="Al terminar, mándale <b>brain-audit.md</b> a Meir por WhatsApp o correo.">When it's done, send <b>brain-audit.md</b> to Meir on WhatsApp or by email.</li>
+</ol>
+<div class="note" data-es="Las instrucciones están en inglés porque así Claude trabaja mejor, y el reporte sale en inglés para Meir. No incluye nombres, correos ni contenido de mensajes.">The instructions are in English because Claude works best that way, and the report comes out in English for Meir. It leaves out names, emails and message content.</div>
+</div>
+
+<div class="card">
+<button class="btn" id="copyBtn" data-es="Copiar las instrucciones">Copy the instructions</button>
+<textarea id="prompt" readonly>You are auditing an Obsidian vault and the machine it runs on, so that a consultant can design an agent system for its owner. Produce a single report file. Follow the rules exactly.
+
+## Privacy rules (non-negotiable)
+- Never include personal content: no people&#x27;s names, email addresses, phone numbers, company partners, message text, meeting content, or financial figures.
+- When you need to show an example filename or heading, anonymize it (e.g. &quot;People/&lt;person&gt;.md&quot;, &quot;Projects/&lt;project&gt;.md&quot;).
+- Counts, folder names, conventions, scripts, dates and tool versions are fine.
+- Do not modify, move or delete any file in the vault. Read only. The only file you create is the report.
+
+## What to inspect
+1. **Vault structure**: top-level folders, number of notes per folder, total notes, total size, file types other than .md.
+2. **Conventions**: frontmatter fields in use (list the keys and how consistently they appear), tag usage, link density (rough: how many notes have zero inbound links), naming patterns, templates folder if any.
+3. **Procedures**: find notes that describe how the vault is maintained (look for words like playbook, procedure, protocol, update, retrieval, state, log). For each, give its path and a 3-line summary of what it instructs. Quote no personal content.
+4. **State and logs**: locate state files and daily log files. How many exist, date of oldest and newest, whether they look like duplicates piling up, whether newer ones contradict older ones (structurally, not content).
+5. **Sources**: find the folder holding consumed sources (transcripts, emails, documents). Count by type and by month. Note how they are linked to people/projects notes, if at all.
+6. **Tasks**: search for task markers (- [ ], TODO, #task, Tasks plugin syntax). Where do tasks live, how many are open, are they scattered.
+7. **Obsidian setup**: read .obsidian/ — installed community plugins (names and versions), core plugins enabled, sync method (Obsidian Sync, Google Drive, iCloud, git). Check for a .git folder and, if present, last commit date and remote host (not URL credentials).
+8. **Automation**: find any scripts (.py, .sh, .js, .applescript), their location, what they do (one line each), and their last-modified date. Check launchd (~/Library/LaunchAgents) and crontab for scheduled jobs related to the vault, Claude, Gmail or Drive. Check whether the scripts&#x27; dependencies are installed.
+9. **The nightly loop**: find every trace of the process that reads Gmail / transcripts / calendar and writes the daily log: scripts, prompts, config files, API keys present (say &quot;present&quot; or &quot;absent&quot;, never print a key). Determine where it runs (this machine, claude.ai, elsewhere) and when it last ran successfully.
+10. **Machine**: macOS version, chip, RAM, free disk, whether the Mac sleeps (pmset -g), installed developer tools and versions: git, node, python3, gh, claude (Claude Code), obsidian app version. Which Google Drive client is used and the local path of the vault.
+11. **Health findings**: list concretely what is broken or stale: scripts that haven&#x27;t run, state files that are inconsistent, folders that are growing without being processed, missing links, anything that would block an agent from maintaining the vault reliably.
+
+## Output
+Write the report to `brain-audit.md` in the vault root, in English, with the 11 sections above as headings, using tables where useful. Finish with a section **&quot;What I could not determine&quot;** listing anything you were unable to check and why. Then print the full path of the report and tell the owner to send that file to his consultant.
+</textarea>
+</div>
+
+<footer>AI Lab · <a href="https://ai-lab.co.il/">ai-lab.co.il</a> · Meir</footer>
+</main>
+<script>
+(function(){
+  const L={en:{copied:'Copied. Now paste it into Claude Code.'},es:{copied:'Copiado. Ahora pégalo en Claude Code.'}};
+  let lang='en';
+  document.querySelectorAll('[data-es]').forEach(el=>{el.dataset.en=el.innerHTML});
+  function setLang(l){lang=l;document.documentElement.lang=l;document.querySelectorAll('[data-es]').forEach(el=>{el.innerHTML=l==='es'?el.dataset.es:el.dataset.en});document.querySelectorAll('.lang button').forEach(b=>b.classList.toggle('on',b.dataset.lang===l));try{localStorage.setItem('beto-lang',l)}catch(_){}}
+  document.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
+  try{if(localStorage.getItem('beto-lang')==='es')setLang('es')}catch(_){}
+  const ta=document.getElementById('prompt'),btn=document.getElementById('copyBtn');
+  btn.addEventListener('click',async()=>{
+    try{await navigator.clipboard.writeText(ta.value)}catch(_){ta.select();document.execCommand('copy')}
+    btn.textContent=L[lang].copied;btn.classList.add('done');
+    setTimeout(()=>{btn.classList.remove('done');btn.innerHTML=lang==='es'?btn.dataset.es:btn.dataset.en},3000);
+  });
+})();
+</script></body></html>

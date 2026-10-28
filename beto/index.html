@@ -33,12 +33,16 @@
       background: rgba(251,247,240,0.9); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--line);
     }
-    .top-in { max-width: 640px; margin: 0 auto; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .top-in { max-width: 640px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .brand { font-weight: 900; font-size: 1.05rem; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; }
     .brand span { color: var(--accent); }
+    .right { display: flex; align-items: center; gap: 12px; }
     .prog { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--ink-3); font-weight: 600; }
-    .prog .bar { width: 96px; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+    .prog .bar { width: 72px; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
     .prog .bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--accent), var(--accent-2)); transition: width .3s; }
+    .lang { display: flex; border: 1.5px solid var(--line-2); border-radius: 999px; overflow: hidden; }
+    .lang button { font: inherit; font-size: 0.78rem; font-weight: 700; padding: 5px 10px; border: 0; background: #fff; color: var(--ink-2); cursor: pointer; }
+    .lang button.on { background: var(--accent); color: #fff; }
 
     .wrap { max-width: 640px; margin: 0 auto; padding: 28px 16px 120px; }
     header h1 { font-size: clamp(1.7rem, 6vw, 2.3rem); font-weight: 900; line-height: 1.15; letter-spacing: -0.02em; margin-bottom: 10px; }
@@ -93,9 +97,6 @@
     .other-wrap { display: none; margin-top: 10px; }
     .other-wrap.show { display: block; }
 
-    .note { background: var(--accent-soft); color: var(--accent-ink); border-radius: 12px; padding: 12px 14px; font-size: 0.93rem; margin-top: 10px; }
-    .note b { font-weight: 700; }
-
     .submit-wrap { position: fixed; bottom: 0; inset-inline: 0; z-index: 30; padding: 12px 16px calc(12px + env(safe-area-inset-bottom)); background: linear-gradient(180deg, rgba(251,247,240,0), var(--bg) 35%); }
     .submit-in { max-width: 640px; margin: 0 auto; }
     .btn { width: 100%; font: inherit; font-size: 1.08rem; font-weight: 800; color: #fff; background: var(--accent); border: 0; border-radius: 14px; padding: 16px; cursor: pointer; box-shadow: 0 10px 24px -10px rgba(31,111,92,0.6); transition: transform .1s, background .15s; }
@@ -126,105 +127,115 @@
 <div class="top">
   <div class="top-in">
     <a class="brand" href="https://ai-lab.co.il/">AI<span>·</span>Lab</a>
-    <div class="prog"><span id="progressText">0%</span><div class="bar"><i id="progressBar"></i></div></div>
+    <div class="right">
+      <div class="prog"><span id="progressText">0%</span><div class="bar"><i id="progressBar"></i></div></div>
+      <div class="lang"><button type="button" data-lang="en" class="on">EN</button><button type="button" data-lang="es">ES</button></div>
+    </div>
   </div>
 </div>
 
 <main class="wrap">
   <header>
-    <h1>Hi Beto, <em>a few questions</em></h1>
-    <p class="lede">Before I design the architecture, I want to understand <b>how you work, what should land in the brain, and what you want back from it</b>. Business questions, not tech. Short answers are fine, and skip anything you already told me.</p>
+    <h1 data-es="Hola Beto, <em>unas preguntas</em>">Hi Beto, <em>a few questions</em></h1>
+    <p class="lede" data-es="Antes de diseñar la arquitectura, quiero entender <b>cómo trabajas, qué debe entrar al cerebro y qué quieres recibir de él</b>. Preguntas de negocio, no técnicas. Respuestas cortas están bien, y salta lo que ya me contaste.">Before I design the architecture, I want to understand <b>how you work, what should land in the brain, and what you want back from it</b>. Business questions, not tech. Short answers are fine, and skip anything you already told me.</p>
     <div class="meta">
-      <span class="chip">About 15 minutes</span>
-      <span class="chip">16 questions</span>
-      <span class="chip">Works on your phone</span>
+      <span class="chip" data-es="Unos 15 minutos">About 15 minutes</span>
+      <span class="chip" data-es="16 preguntas">16 questions</span>
+      <span class="chip" data-es="Funciona en tu teléfono">Works on your phone</span>
     </div>
   </header>
 
   <form id="intakeForm" novalidate>
     <input class="honey" type="text" id="website" name="website" tabindex="-1" autocomplete="off">
     <input type="hidden" id="f_name" data-q="Name" value="Beto">
+    <input type="hidden" id="f_lang" data-q="Language" value="en">
 
     <!-- A -->
     <section class="section">
-      <div class="s-head"><div class="s-num">A</div><h2>How you work</h2></div>
-      <p class="s-sub">Where information comes in, and where you are the glue</p>
+      <div class="s-head"><div class="s-num">A</div><h2 data-es="Cómo trabajas">How you work</h2></div>
+      <p class="s-sub" data-es="Por dónde entra la información, y dónde tú eres el pegamento">Where information comes in, and where you are the glue</p>
 
       <div class="q" data-required>
-        <label class="t" for="f_day">Walk me through a normal workday<span class="req">*</span></label>
-        <div class="hint">Where does information come in (WhatsApp, email, meetings, calls), and what do you do with it today?</div>
-        <textarea id="f_day" class="tall" data-q="A normal workday" placeholder="Morning: … / During the day: … / Evening: …"></textarea>
+        <label class="t" for="f_email" data-es='Tu correo<span class="req">*</span>'>Your email<span class="req">*</span></label>
+        <div class="hint" data-es="Ahí te mando el siguiente paso">That's where the next step goes</div>
+        <input type="email" id="f_email" data-q="Email" placeholder="name@company.com" autocomplete="email" inputmode="email">
       </div>
 
       <div class="q" data-required>
-        <label class="t" for="f_three">Which 3 things do you do by hand every week that you wish an agent did?<span class="req">*</span></label>
+        <label class="t" for="f_day" data-es='Cuéntame un día normal de trabajo<span class="req">*</span>'>Walk me through a normal workday<span class="req">*</span></label>
+        <div class="hint" data-es="¿Por dónde entra la información (WhatsApp, correo, reuniones, llamadas), y qué haces hoy con ella?">Where does information come in (WhatsApp, email, meetings, calls), and what do you do with it today?</div>
+        <textarea id="f_day" class="tall" data-q="A normal workday" placeholder="Morning: … / During the day: … / Evening: …" data-es-ph="Mañana: … / Durante el día: … / Noche: …"></textarea>
+      </div>
+
+      <div class="q" data-required>
+        <label class="t" for="f_three" data-es='¿Qué 3 cosas haces a mano cada semana que quisieras que hiciera un agente?<span class="req">*</span>'>Which 3 things do you do by hand every week that you wish an agent did?<span class="req">*</span></label>
         <textarea id="f_three" data-q="3 things to hand to an agent" placeholder="1. …&#10;2. …&#10;3. …"></textarea>
       </div>
 
       <div class="q" data-required>
-        <div class="t">Which companies / projects should the brain keep separate?<span class="req">*</span></div>
+        <div class="t" data-es='¿Qué empresas / proyectos debe mantener separados el cerebro?<span class="req">*</span>'>Which companies / projects should the brain keep separate?<span class="req">*</span></div>
         <div class="opts" data-q="Companies to separate" data-other>
           <label><input type="checkbox" name="co" value="ISRACAP"><span>ISRACAP</span></label>
           <label><input type="checkbox" name="co" value="HIBI"><span>HIBI</span></label>
           <label><input type="checkbox" name="co" value="Personal"><span>Personal</span></label>
-          <label><input type="checkbox" name="co" value="__other__"><span>Other</span></label>
+          <label><input type="checkbox" name="co" value="__other__"><span data-es="Otro">Other</span></label>
         </div>
-        <div class="other-wrap"><input type="text" data-other-input placeholder="Which?"></div>
+        <div class="other-wrap"><input type="text" data-other-input placeholder="Which?" data-es-ph="¿Cuáles?"></div>
       </div>
 
       <div class="q">
-        <label class="t" for="f_who">Who else, if anyone, needs to see or add to the brain?</label>
-        <div class="hint">Assistant, partner, someone on the team. Role is enough, no names needed.</div>
-        <input type="text" id="f_who" data-q="Who else uses the brain" placeholder="For example: my assistant, read-only / nobody for now">
+        <label class="t" for="f_who" data-es="¿Alguien más necesita ver o agregar cosas al cerebro?">Who else, if anyone, needs to see or add to the brain?</label>
+        <div class="hint" data-es="Asistente, socio, alguien del equipo. Con el rol basta, sin nombres.">Assistant, partner, someone on the team. Role is enough, no names needed.</div>
+        <input type="text" id="f_who" data-q="Who else uses the brain" placeholder="For example: my assistant, read-only / nobody for now" data-es-ph="Por ejemplo: mi asistente, solo lectura / nadie por ahora">
       </div>
     </section>
 
     <!-- B -->
     <section class="section">
-      <div class="s-head"><div class="s-num">B</div><h2>Capture</h2></div>
-      <p class="s-sub">From WhatsApp into the brain</p>
+      <div class="s-head"><div class="s-num">B</div><h2 data-es="Captura">Capture</h2></div>
+      <p class="s-sub" data-es="De WhatsApp al cerebro">From WhatsApp into the brain</p>
 
       <div class="q">
-        <div class="t">One real voice note</div>
-        <div class="hint">After you send this form, record a voice note on WhatsApp the way you'd dictate from the car (the content can be invented, the style matters) and send it to me. Tick to remind yourself:</div>
+        <div class="t" data-es="Una nota de voz real">One real voice note</div>
+        <div class="hint" data-es="Después de enviar este formulario, graba una nota de voz en WhatsApp como la dictarías desde el coche (el contenido puede ser inventado, lo que importa es el estilo) y mándamela. Marca para recordarlo:">After you send this form, record a voice note on WhatsApp the way you'd dictate from the car (the content can be invented, the style matters) and send it to me. Tick to remind yourself:</div>
         <div class="opts" data-q="Voice note">
-          <label><input type="checkbox" name="vn" value="Will send a voice note on WhatsApp"><span>I'll send a voice note on WhatsApp</span></label>
+          <label><input type="checkbox" name="vn" value="Will send a voice note on WhatsApp"><span data-es="Mando una nota de voz por WhatsApp">I'll send a voice note on WhatsApp</span></label>
         </div>
       </div>
 
       <div class="q" data-required>
-        <div class="t">When you dictate, what should happen next?<span class="req">*</span></div>
+        <div class="t" data-es='Cuando dictas, ¿qué debe pasar después?<span class="req">*</span>'>When you dictate, what should happen next?<span class="req">*</span></div>
         <div class="opts stack" data-q="After dictating">
-          <label><input type="radio" name="after" value="File it silently"><span>File it silently, don't bother me</span></label>
-          <label><input type="radio" name="after" value="Reply confirming where it was filed"><span>Reply on WhatsApp: "filed under X"</span></label>
-          <label><input type="radio" name="after" value="Reply only when unsure where to file"><span>Reply only when it's not sure where it belongs</span></label>
+          <label><input type="radio" name="after" value="File it silently"><span data-es="Archivarlo en silencio, sin molestarme">File it silently, don't bother me</span></label>
+          <label><input type="radio" name="after" value="Reply confirming where it was filed"><span data-es='Responder por WhatsApp: "archivado en X"'>Reply on WhatsApp: "filed under X"</span></label>
+          <label><input type="radio" name="after" value="Reply only when unsure where to file"><span data-es="Responder solo cuando no sepa dónde va">Reply only when it's not sure where it belongs</span></label>
         </div>
       </div>
 
       <div class="q" data-required>
-        <label class="t" for="f_chats">Which WhatsApp conversations matter most for the brain?<span class="req">*</span></label>
-        <div class="hint">Partners, clients, developers, team. Roughly how many active work chats?</div>
-        <textarea id="f_chats" data-q="WhatsApp chats that matter" placeholder="For example: 4 partner chats, 2 developer groups, ~10 client chats"></textarea>
+        <label class="t" for="f_chats" data-es='¿Qué conversaciones de WhatsApp importan más para el cerebro?<span class="req">*</span>'>Which WhatsApp conversations matter most for the brain?<span class="req">*</span></label>
+        <div class="hint" data-es="Socios, clientes, desarrolladores, equipo. ¿Más o menos cuántos chats de trabajo activos?">Partners, clients, developers, team. Roughly how many active work chats?</div>
+        <textarea id="f_chats" data-q="WhatsApp chats that matter" placeholder="For example: 4 partner chats, 2 developer groups, ~10 client chats" data-es-ph="Por ejemplo: 4 chats de socios, 2 grupos de desarrolladores, ~10 chats de clientes"></textarea>
       </div>
     </section>
 
     <!-- C -->
     <section class="section">
-      <div class="s-head"><div class="s-num">C</div><h2>Questions you want answered</h2></div>
-      <p class="s-sub">This defines what the brain must be able to retrieve</p>
+      <div class="s-head"><div class="s-num">C</div><h2 data-es="Preguntas que quieres que responda">Questions you want answered</h2></div>
+      <p class="s-sub" data-es="Esto define qué debe poder recuperar el cerebro">This defines what the brain must be able to retrieve</p>
 
       <div class="q" data-required>
-        <label class="t" for="f_qs">Write 5 real questions you'd like to ask the brain next week<span class="req">*</span></label>
-        <div class="hint">"What did I agree with X?", "What's open on project Y?", "Who do I owe a reply to?"</div>
+        <label class="t" for="f_qs" data-es='Escribe 5 preguntas reales que te gustaría hacerle al cerebro la próxima semana<span class="req">*</span>'>Write 5 real questions you'd like to ask the brain next week<span class="req">*</span></label>
+        <div class="hint" data-es='"¿Qué acordé con X?", "¿Qué está pendiente en el proyecto Y?", "¿A quién le debo una respuesta?"'>"What did I agree with X?", "What's open on project Y?", "Who do I owe a reply to?"</div>
         <textarea id="f_qs" class="tall" data-q="5 questions for the brain" placeholder="1. …&#10;2. …&#10;3. …&#10;4. …&#10;5. …"></textarea>
       </div>
 
       <div class="q" data-required>
-        <div class="t">Where should the answer arrive?<span class="req">*</span></div>
-        <div class="hint">Tick as many as apply</div>
+        <div class="t" data-es='¿Dónde debe llegar la respuesta?<span class="req">*</span>'>Where should the answer arrive?<span class="req">*</span></div>
+        <div class="hint" data-es="Marca todas las que apliquen">Tick as many as apply</div>
         <div class="opts" data-q="Where answers arrive">
           <label><input type="checkbox" name="where" value="WhatsApp"><span>WhatsApp</span></label>
-          <label><input type="checkbox" name="where" value="Claude app"><span>Claude app</span></label>
+          <label><input type="checkbox" name="where" value="Claude app"><span data-es="App de Claude">Claude app</span></label>
           <label><input type="checkbox" name="where" value="Obsidian"><span>Obsidian</span></label>
         </div>
       </div>
@@ -232,97 +243,97 @@
 
     <!-- D -->
     <section class="section">
-      <div class="s-head"><div class="s-num">D</div><h2>Tasks and goals</h2></div>
-      <p class="s-sub">One system, maintained by the agent</p>
+      <div class="s-head"><div class="s-num">D</div><h2 data-es="Tareas y metas">Tasks and goals</h2></div>
+      <p class="s-sub" data-es="Un solo sistema, mantenido por el agente">One system, maintained by the agent</p>
 
       <div class="q" data-required>
-        <label class="t" for="f_tasks">Where do your tasks live right now?<span class="req">*</span></label>
-        <input type="text" id="f_tasks" data-q="Where tasks live today" placeholder="For example: Apple Reminders + my head + WhatsApp to myself">
+        <label class="t" for="f_tasks" data-es='¿Dónde viven tus tareas hoy?<span class="req">*</span>'>Where do your tasks live right now?<span class="req">*</span></label>
+        <input type="text" id="f_tasks" data-q="Where tasks live today" placeholder="For example: Apple Reminders + my head + WhatsApp to myself" data-es-ph="Por ejemplo: Recordatorios de Apple + mi cabeza + WhatsApp a mí mismo">
       </div>
 
       <div class="q" data-required>
-        <div class="t">What does "what matters this week" look like for you?<span class="req">*</span></div>
+        <div class="t" data-es='¿Cómo se ve para ti "lo que importa esta semana"?<span class="req">*</span>'>What does "what matters this week" look like for you?<span class="req">*</span></div>
         <div class="opts stack" data-q="Weekly view format" data-other>
-          <label><input type="radio" name="week" value="A list by company, in Obsidian"><span>A list by company, in Obsidian</span></label>
-          <label><input type="radio" name="week" value="A short WhatsApp message every morning"><span>A short WhatsApp message every morning</span></label>
-          <label><input type="radio" name="week" value="A weekly summary on Sunday"><span>A weekly summary on Sunday</span></label>
-          <label><input type="radio" name="week" value="__other__"><span>Something else</span></label>
+          <label><input type="radio" name="week" value="A list by company, in Obsidian"><span data-es="Una lista por empresa, en Obsidian">A list by company, in Obsidian</span></label>
+          <label><input type="radio" name="week" value="A short WhatsApp message every morning"><span data-es="Un mensaje corto de WhatsApp cada mañana">A short WhatsApp message every morning</span></label>
+          <label><input type="radio" name="week" value="A weekly summary on Sunday"><span data-es="Un resumen semanal el domingo">A weekly summary on Sunday</span></label>
+          <label><input type="radio" name="week" value="__other__"><span data-es="Otra cosa">Something else</span></label>
         </div>
-        <div class="other-wrap"><input type="text" data-other-input placeholder="Describe it"></div>
+        <div class="other-wrap"><input type="text" data-other-input placeholder="Describe it" data-es-ph="Descríbelo"></div>
       </div>
     </section>
 
     <!-- E -->
     <section class="section">
-      <div class="s-head"><div class="s-num">E</div><h2>Tools and machines</h2></div>
-      <p class="s-sub">What's already there</p>
+      <div class="s-head"><div class="s-num">E</div><h2 data-es="Herramientas y equipos">Tools and machines</h2></div>
+      <p class="s-sub" data-es="Lo que ya tienes">What's already there</p>
 
       <div class="q">
-        <div class="t">Three screenshots</div>
-        <div class="hint">Send me on WhatsApp after the form: <b>Instinct → Integrations</b>, <b>Claude → Plan</b>, <b>Obsidian → Settings → Community plugins</b>.</div>
+        <div class="t" data-es="Tres capturas de pantalla">Three screenshots</div>
+        <div class="hint" data-es="Mándamelas por WhatsApp después del formulario: <b>Instinct → Integrations</b>, <b>Claude → Plan</b>, <b>Obsidian → Settings → Community plugins</b>.">Send me on WhatsApp after the form: <b>Instinct → Integrations</b>, <b>Claude → Plan</b>, <b>Obsidian → Settings → Community plugins</b>.</div>
         <div class="opts" data-q="Screenshots">
-          <label><input type="checkbox" name="ss" value="Will send 3 screenshots on WhatsApp"><span>I'll send the 3 screenshots on WhatsApp</span></label>
+          <label><input type="checkbox" name="ss" value="Will send 3 screenshots on WhatsApp"><span data-es="Mando las 3 capturas por WhatsApp">I'll send the 3 screenshots on WhatsApp</span></label>
         </div>
       </div>
 
       <div class="q" data-required>
-        <label class="t" for="f_mac">Which Mac runs the brain?<span class="req">*</span></label>
-        <div class="hint">MacBook / Mac mini / iMac, roughly how old</div>
-        <input type="text" id="f_mac" data-q="Which Mac" placeholder="For example: MacBook Pro, 2 years old">
+        <label class="t" for="f_mac" data-es='¿En qué Mac corre el cerebro?<span class="req">*</span>'>Which Mac runs the brain?<span class="req">*</span></label>
+        <div class="hint" data-es="MacBook / Mac mini / iMac, y más o menos qué tan vieja">MacBook / Mac mini / iMac, roughly how old</div>
+        <input type="text" id="f_mac" data-q="Which Mac" placeholder="For example: MacBook Pro, 2 years old" data-es-ph="Por ejemplo: MacBook Pro, de hace 2 años">
       </div>
 
       <div class="q" data-required>
-        <div class="t">Is that Mac on during the night?<span class="req">*</span></div>
+        <div class="t" data-es='¿Esa Mac queda encendida de noche?<span class="req">*</span>'>Is that Mac on during the night?<span class="req">*</span></div>
         <div class="opts stack" data-q="Mac on at night">
-          <label><input type="radio" name="night" value="Yes, always on"><span>Yes, always on</span></label>
-          <label><input type="radio" name="night" value="Sometimes / lid closed"><span>Sometimes, or with the lid closed</span></label>
-          <label><input type="radio" name="night" value="No, I shut it down"><span>No, I shut it down</span></label>
-          <label><input type="radio" name="night" value="Not sure"><span>Not sure</span></label>
+          <label><input type="radio" name="night" value="Yes, always on"><span data-es="Sí, siempre encendida">Yes, always on</span></label>
+          <label><input type="radio" name="night" value="Sometimes / lid closed"><span data-es="A veces, o con la tapa cerrada">Sometimes, or with the lid closed</span></label>
+          <label><input type="radio" name="night" value="No, I shut it down"><span data-es="No, la apago">No, I shut it down</span></label>
+          <label><input type="radio" name="night" value="Not sure"><span data-es="No estoy seguro">Not sure</span></label>
         </div>
       </div>
 
       <div class="q">
-        <div class="t">Do you have a second Mac or a Mac mini?</div>
+        <div class="t" data-es="¿Tienes una segunda Mac o una Mac mini?">Do you have a second Mac or a Mac mini?</div>
         <div class="opts" data-q="Second Mac">
-          <label><input type="radio" name="mac2" value="Yes"><span>Yes</span></label>
+          <label><input type="radio" name="mac2" value="Yes"><span data-es="Sí">Yes</span></label>
           <label><input type="radio" name="mac2" value="No"><span>No</span></label>
         </div>
       </div>
 
       <div class="q" data-required>
-        <div class="t">Did the friend who built the setup leave you any notes, a document or a chat explaining how it works?<span class="req">*</span></div>
+        <div class="t" data-es='¿El amigo que armó el sistema te dejó notas, un documento o un chat explicando cómo funciona?<span class="req">*</span>'>Did the friend who built the setup leave you any notes, a document or a chat explaining how it works?<span class="req">*</span></div>
         <div class="opts stack" data-q="Builder's notes">
-          <label><input type="radio" name="notes" value="Yes, I'll forward it as is"><span>Yes, I'll forward it as is</span></label>
-          <label><input type="radio" name="notes" value="Only a WhatsApp chat, I'll forward the relevant part"><span>Only a WhatsApp chat, I'll forward the relevant part</span></label>
-          <label><input type="radio" name="notes" value="Nothing written"><span>Nothing written</span></label>
+          <label><input type="radio" name="notes" value="Yes, I'll forward it as is"><span data-es="Sí, te lo reenvío tal cual">Yes, I'll forward it as is</span></label>
+          <label><input type="radio" name="notes" value="Only a WhatsApp chat, I'll forward the relevant part"><span data-es="Solo un chat de WhatsApp, te reenvío la parte relevante">Only a WhatsApp chat, I'll forward the relevant part</span></label>
+          <label><input type="radio" name="notes" value="Nothing written"><span data-es="Nada escrito">Nothing written</span></label>
         </div>
       </div>
     </section>
 
     <!-- F -->
     <section class="section">
-      <div class="s-head"><div class="s-num">F</div><h2>Two small homework items</h2></div>
-      <p class="s-sub">These become the build list</p>
+      <div class="s-head"><div class="s-num">F</div><h2 data-es="Dos tareas pequeñas">Two small homework items</h2></div>
+      <p class="s-sub" data-es="De aquí sale la lista de lo que construimos">These become the build list</p>
 
       <div class="q">
-        <div class="t">Three days of "glue"</div>
-        <div class="hint">For 3 days, every time you move information by hand between two tools, send yourself one WhatsApp line ("copied meeting summary into project note"). Forward me the list at the end.</div>
+        <div class="t" data-es='Tres días de "pegamento"'>Three days of "glue"</div>
+        <div class="hint" data-es='Durante 3 días, cada vez que muevas información a mano entre dos herramientas, mándate una línea por WhatsApp ("copié el resumen de la reunión a la nota del proyecto"). Al final reenvíame la lista.'>For 3 days, every time you move information by hand between two tools, send yourself one WhatsApp line ("copied meeting summary into project note"). Forward me the list at the end.</div>
         <div class="opts" data-q="3 days of glue">
-          <label><input type="checkbox" name="glue" value="I'm in"><span>I'm in, starting tomorrow</span></label>
+          <label><input type="checkbox" name="glue" value="I'm in"><span data-es="Le entro, empiezo mañana">I'm in, starting tomorrow</span></label>
         </div>
       </div>
 
       <div class="q">
-        <div class="t">A 3-minute screen recording</div>
-        <div class="hint">QuickTime, no editing: "a normal morning with the brain". What you open, what you read, what you type. Send on WhatsApp or Drive.</div>
+        <div class="t" data-es="Una grabación de pantalla de 3 minutos">A 3-minute screen recording</div>
+        <div class="hint" data-es='QuickTime, sin editar: "una mañana normal con el cerebro". Qué abres, qué lees, qué escribes. Mándala por WhatsApp o Drive.'>QuickTime, no editing: "a normal morning with the brain". What you open, what you read, what you type. Send on WhatsApp or Drive.</div>
         <div class="opts" data-q="Screen recording">
-          <label><input type="checkbox" name="rec" value="Will send a screen recording"><span>I'll send it</span></label>
+          <label><input type="checkbox" name="rec" value="Will send a screen recording"><span data-es="La mando">I'll send it</span></label>
         </div>
       </div>
 
       <div class="q">
-        <label class="t" for="f_more">Anything else I should know?</label>
-        <textarea id="f_more" data-q="Anything else" placeholder="Constraints, deadlines, things that must not break"></textarea>
+        <label class="t" for="f_more" data-es="¿Algo más que deba saber?">Anything else I should know?</label>
+        <textarea id="f_more" data-q="Anything else" placeholder="Constraints, deadlines, things that must not break" data-es-ph="Restricciones, fechas límite, cosas que no deben romperse"></textarea>
       </div>
     </section>
 
@@ -331,18 +342,17 @@
 
   <div id="success">
     <div class="ok">✓</div>
-    <h2>Thank you, Beto</h2>
-    <p>Your answers are with Meir. One more step, and then the architecture comes back to you.</p>
+    <h2 data-es="Gracias, Beto">Thank you, Beto</h2>
+    <p data-es="Tus respuestas ya están con Meir. Él te manda el siguiente paso por correo.">Your answers are with Meir. He'll email you the next step.</p>
     <div class="todo">
-      <h3>Send on WhatsApp when you get a minute</h3>
+      <h3 data-es="Mándame por WhatsApp cuando tengas un minuto">Send on WhatsApp when you get a minute</h3>
       <ol>
-        <li><b>One voice note</b>, the way you'd dictate from the car</li>
-        <li><b>3 screenshots:</b> Instinct → Integrations · Claude → Plan · Obsidian → Community plugins</li>
-        <li><b>The friend's notes</b>, if there are any</li>
-        <li><b>brain-audit.md</b> once you've run the audit on your Mac</li>
-        <li>In 3 days: <b>the "glue" list</b> and the <b>screen recording</b></li>
+        <li data-es="<b>Una nota de voz</b>, como la dictarías desde el coche"><b>One voice note</b>, the way you'd dictate from the car</li>
+        <li data-es="<b>3 capturas:</b> Instinct → Integrations · Claude → Plan · Obsidian → Community plugins"><b>3 screenshots:</b> Instinct → Integrations · Claude → Plan · Obsidian → Community plugins</li>
+        <li data-es="<b>Las notas de tu amigo</b>, si las hay"><b>The friend's notes</b>, if there are any</li>
+        <li data-es='En 3 días: <b>la lista de "pegamento"</b> y la <b>grabación de pantalla</b>'>In 3 days: <b>the "glue" list</b> and the <b>screen recording</b></li>
       </ol>
-      <div class="center"><a class="btn wa" href="https://wa.me/972546500795?text=Hi%20Meir%2C%20here%20are%20the%20items%20from%20the%20questionnaire%3A" target="_blank" rel="noopener">Open WhatsApp</a></div>
+      <div class="center"><a class="btn wa" href="https://wa.me/972546500795?text=Hi%20Meir%2C%20here%20are%20the%20items%20from%20the%20questionnaire%3A" target="_blank" rel="noopener" data-es="Abrir WhatsApp">Open WhatsApp</a></div>
     </div>
   </div>
 
@@ -350,7 +360,7 @@
 </main>
 
 <div class="submit-wrap" id="submitWrap">
-  <div class="submit-in"><button class="btn" id="submitBtn" type="submit" form="intakeForm">Send to Meir</button></div>
+  <div class="submit-in"><button class="btn" id="submitBtn" type="submit" form="intakeForm" data-es="Enviar a Meir">Send to Meir</button></div>
 </div>
 
 <script>
@@ -360,6 +370,26 @@
   const bar = document.getElementById('progressBar');
   const barText = document.getElementById('progressText');
   const errBox = document.getElementById('errBox');
+  const MSG = {
+    en: { missing: 'A few required questions are still empty (marked with *). Please also check the email address.', sending: 'Sending…', failed: 'Sending failed. You can try again, or <a href="#" id="waFallback">send your answers over WhatsApp</a>.' },
+    es: { missing: 'Faltan algunas preguntas obligatorias (marcadas con *). Revisa también el correo.', sending: 'Enviando…', failed: 'No se pudo enviar. Puedes intentar de nuevo, o <a href="#" id="waFallback">mandar tus respuestas por WhatsApp</a>.' }
+  };
+  let lang = 'en';
+
+  /* ---- language ---- */
+  document.querySelectorAll('[data-es]').forEach(el => { el.dataset.en = el.innerHTML; });
+  document.querySelectorAll('[data-es-ph]').forEach(el => { el.dataset.enPh = el.placeholder; });
+  function setLang(l) {
+    lang = l;
+    document.documentElement.lang = l;
+    document.getElementById('f_lang').value = l;
+    document.querySelectorAll('[data-es]').forEach(el => { el.innerHTML = l === 'es' ? el.dataset.es : el.dataset.en; });
+    document.querySelectorAll('[data-es-ph]').forEach(el => { el.placeholder = l === 'es' ? el.dataset.esPh : el.dataset.enPh; });
+    document.querySelectorAll('.lang button').forEach(b => b.classList.toggle('on', b.dataset.lang === l));
+    try { localStorage.setItem('beto-lang', l); } catch (_) {}
+  }
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+  try { const saved = localStorage.getItem('beto-lang'); if (saved === 'es') setLang('es'); } catch (_) {}
 
   document.querySelectorAll('[data-other]').forEach(group => {
     const wrap = group.parentElement.querySelector('.other-wrap');
@@ -391,12 +421,14 @@
   }
 
   function updateProgress() {
-    const answers = collect().filter(a => a.q !== 'Name');
+    const answers = collect().filter(a => a.q !== 'Name' && a.q !== 'Language');
     const pct = Math.round(answers.filter(a => a.a).length / answers.length * 100);
     bar.style.width = pct + '%'; barText.textContent = pct + '%';
   }
   form.addEventListener('input', updateProgress);
   form.addEventListener('change', updateProgress);
+
+  function validEmail(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim()); }
 
   function validate() {
     let firstBad = null;
@@ -407,6 +439,8 @@
         if (i.type === 'checkbox' || i.type === 'radio') { if (i.checked) ok = true; }
         else if (i.value.trim()) ok = true;
       });
+      const em = q.querySelector('#f_email');
+      if (em && !validEmail(em.value)) ok = false;
       if (!ok) { q.classList.add('invalid'); if (!firstBad) firstBad = q; }
     });
     return firstBad;
@@ -423,7 +457,7 @@
     errBox.classList.remove('show');
     const bad = validate();
     if (bad) {
-      errBox.textContent = 'A few required questions are still empty (marked with *).';
+      errBox.textContent = MSG[lang].missing;
       errBox.classList.add('show');
       bad.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
@@ -432,23 +466,25 @@
 
     const btn = document.getElementById('submitBtn');
     const orig = btn.textContent;
-    btn.disabled = true; btn.textContent = 'Sending…';
+    btn.disabled = true; btn.textContent = MSG[lang].sending;
 
     const answers = collect();
     const name = answers.find(a => a.q === 'Name').a;
+    const email = answers.find(a => a.q === 'Email').a;
 
     try {
       const fd = new FormData();
       fd.append('access_key', WEB3FORMS_KEY);
-      fd.append('subject', 'Isracap-Brain intake — ' + name);
+      fd.append('subject', 'Isracap-Brain intake — ' + name + ' (' + email + ')');
       fd.append('from_name', 'AI Lab — Brain intake');
+      fd.append('replyto', email);
       answers.forEach((a, i) => fd.append('Q' + String(i + 1).padStart(2, '0'), a.q + ' → ' + (a.a || '—')));
       fd.append('Source', 'mlb-code.github.io/private-intake/beto');
       try { await post(fd); } catch (_) { await post(fd); }
       showSuccess();
     } catch (err) {
       btn.disabled = false; btn.textContent = orig;
-      errBox.innerHTML = 'Sending failed. You can try again, or <a href="#" id="waFallback">send your answers over WhatsApp</a>.';
+      errBox.innerHTML = MSG[lang].failed;
       errBox.classList.add('show');
       document.getElementById('waFallback').addEventListener('click', ev => {
         ev.preventDefault();
